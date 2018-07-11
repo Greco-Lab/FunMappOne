@@ -24,13 +24,11 @@ if(length(cran_pkgs.inst)>0){
   }
 }
 ```
-### Load 'shiny' library
+### Run FunMappOne from GitHub
 ```R
+# Load 'shiny' library
 library(shiny)
 library(shinyjs)
-```
-
-### Using runGitHub
-```R
+# Using runGitHub
 runGitHub("FunMappOne", "Greco-Lab")
 ```
