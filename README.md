@@ -24,14 +24,13 @@ if(length(cran_pkgs.inst)>0){
   }
 }
 ```
-# Load 'shiny' library
+### Load 'shiny' library
 ```R
 library(shiny)
 library(shinyjs)
 ```
 
-# Using runGitHub
+### Using runGitHub
 ```R
-
-  runGitHub("eUTOPIA", "Greco-Lab", subdir="eUTOPIA-app")
+runGitHub("eUTOPIA", "Greco-Lab", subdir="eUTOPIA-app")
 ```
