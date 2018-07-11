@@ -32,5 +32,5 @@ library(shinyjs)
 
 ### Using runGitHub
 ```R
-runGitHub("eUTOPIA", "Greco-Lab", subdir="eUTOPIA-app")
+runGitHub("FunMappOne", "Greco-Lab")
 ```
