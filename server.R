@@ -418,7 +418,9 @@ shinyServer(function(input, output,session) {
   
   output$heatmap <- renderPlot({
     shiny::validate(need(expr = !is.null(gVars$toPlot),message = "No data to plot") )
-    plot(gVars$toPlot)
+    #plot(gVars$toPlot)
+    print(class(gVars$toPlot))
+    print(gVars$toPlot)
   })
   
   observeEvent(input$do, {
