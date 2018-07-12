@@ -242,7 +242,7 @@ plot_grid <- function(path_mat,path_hier, title="", experiment_ann=c(),discrete=
 #  save(list = ls(all.names = TRUE),file = "ggplotting")
   
   #plot the final result
-  plot(gplot)
+  #plot(gplot) #Commented by Veer
   return(gplot)
 }
 
