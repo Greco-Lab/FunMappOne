@@ -436,6 +436,9 @@ shinyServer(function(input, output,session) {
     print("INSIDE RENDER PLOT ----->>>>")
     print("Inside object event input$do")
     
+    gVars$toPlot = as.grob(ggplot(mtcars, aes(x = carb)) + geom_bar())
+    return()
+    
     l1 = input$lev1
     l2 = input$lev2
     l3 = input$lev3
@@ -508,8 +511,7 @@ shinyServer(function(input, output,session) {
     ########################################################
     #gVars$toPlot = plot_grid(path_mat = mat_to_Plot,path_hier = hier,experiment_ann =  gVars$exp_ann,discrete =  isDiscrete,level_col = as.numeric(input$level),square_colors=c(),color_leg=c(),path_text_size = 12,treat_text_size = 12)
 
-    #gVars$toPlot = plot_grid(path_mat = mat_to_Plot,path_hier = hier,experiment_ann =  gVars$exp_ann,discrete =  isDiscrete,level_col = max(1,as.numeric(input$level)-1),square_colors=c(),color_leg=c(),path_text_size = 12,treat_text_size = 12)
-    gVars$toPlot = as.grob(ggplot(mtcars, aes(x = carb)) + geom_bar())
+    gVars$toPlot = plot_grid(path_mat = mat_to_Plot,path_hier = hier,experiment_ann =  gVars$exp_ann,discrete =  isDiscrete,level_col = max(1,as.numeric(input$level)-1),square_colors=c(),color_leg=c(),path_text_size = 12,treat_text_size = 12)
     
     
     print("afterPLOTSPLOTSPLOTSPLOTSPLOTSPLOTSPLOTS")
