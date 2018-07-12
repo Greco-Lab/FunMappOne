@@ -225,7 +225,9 @@ plot_grid <- function(path_mat,path_hier, title="", experiment_ann=c(),discrete=
   }
   
   #afrer faceting we need to open the ggplot object to put different row/column label colors to different facets
+  png("NULL")
   gplot <- ggplotGrob( p )
+  dev.off()
   nms <- lapply( gplot$grobs , function(x) names( x[]$children ) )
   #we search for axis.line.x and axis.line.y containers
   grbs_x_id <- which( sapply( lapply( nms , function(x) grepl( "axis.line.x" , x ) ) , any ) == 1 )
