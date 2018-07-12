@@ -32,3 +32,13 @@ library(shinyjs)
 # Using runGitHub
 runGitHub("FunMappOne", "Greco-Lab")
 ```
+
+#### How to run locally
+```R
+  # Clone the git repository
+  git clone https://github.com/Greco-Lab/FunMappOne FunMappOne
+
+  # Start R session and run by using runApp()
+  library(shiny)
+  runApp("FunMappOne/")
+```
