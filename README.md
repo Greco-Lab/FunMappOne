@@ -13,7 +13,7 @@ biocLite("GOSim")
 
 #Install CRAN dependencies
 cran_pkgs <- c("ggplotify", "RColorBrewer", "reshape", "ggplot2", "shiny", "shinyjs", "tibble", 
-               "gProfileR", "DT", "randomcoloR", "readxl", "cellranger")
+               "gProfileR", "DT", "randomcoloR", "readxl", "cellranger", "devtools")
 cran_pkgs.inst <- cran_pkgs[!(cran_pkgs %in% rownames(installed.packages()))]
 if(length(cran_pkgs.inst)>0){
   print(paste0("Missing ", length(cran_pkgs.inst), " CRAN Packages:"))
