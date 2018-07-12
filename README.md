@@ -4,12 +4,16 @@
 
 ```R
 source("http://bioconductor.org/biocLite.R")
-biocLite("clusterProfiler")
-biocLite("org.Hs.eg.db")
-biocLite("org.Mm.eg.db")
-biocLite("KEGG.db")
-biocLite("reactome.db")
-biocLite("GOSim")
+bioc_pkgs <- c("clusterProfiler", "org.Hs.eg.db", "org.Mm.eg.db", "KEGG.db", "reactome.db", "GOSim")
+bioc_pkgs.inst <- bioc_pkgs[!(bioc_pkgs %in% rownames(installed.packages()))]
+if(length(bioc_pkgs.inst)>0){
+  print(paste0("Missing ", length(bioc_pkgs.inst), " Bioconductor Packages:"))
+  for(pkg in bioc_pkgs.inst){
+    print(paste0("Installing Package:'", pkg, "'..."))
+    biocLite(pkg, suppressUpdates=TRUE)
+    print("Installed!!!")
+  }
+}
 
 #Install CRAN dependencies
 cran_pkgs <- c("ggplotify", "RColorBrewer", "reshape", "ggplot2", "shiny", "shinyjs", "tibble", 
