@@ -436,8 +436,9 @@ shinyServer(function(input, output,session) {
     print("INSIDE RENDER PLOT ----->>>>")
     print("Inside object event input$do")
     
-    gVars$toPlot = as.grob(ggplot(mtcars, aes(x = carb)) + geom_bar())
-    return()
+    #Test plot
+    #gVars$toPlot = as.grob(ggplot(mtcars, aes(x = carb)) + geom_bar())
+    #return()
     
     l1 = input$lev1
     l2 = input$lev2
