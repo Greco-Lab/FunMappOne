@@ -420,7 +420,7 @@ shinyServer(function(input, output,session) {
     shiny::validate(need(expr = !is.null(gVars$toPlot),message = "No data to plot") )
     print(class(gVars$toPlot))
     #plot(gVars$toPlot)
-    as.ggplot(gVars$toPlot)
+    print(as.ggplot(gVars$toPlot))
   })
   
   observeEvent(input$do, {
