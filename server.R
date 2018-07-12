@@ -419,9 +419,10 @@ shinyServer(function(input, output,session) {
   output$heatmap <- renderPlot({
     shiny::validate(need(expr = !is.null(gVars$toPlot),message = "No data to plot") )
     print(class(gVars$toPlot))
+    shiny::validate(need(expr = is.null(gVars$toPlot),message = "Plot ready!") )
     #plot(gVars$toPlot)
     #print(as.ggplot(gVars$toPlot))
-    ggplot(mtcars, aes(x = carb)) + geom_bar()
+    #ggplot(mtcars, aes(x = carb)) + geom_bar()
   })
   
   observeEvent(input$do, {
