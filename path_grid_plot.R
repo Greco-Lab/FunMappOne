@@ -209,7 +209,7 @@ plot_grid <- function(path_mat,path_hier, title="", experiment_ann=c(),discrete=
     geom_tile(colour = "black",size=0.1) +
     ggtitle(title) +
     theme(plot.title = element_text(hjust = 0.5)) +
-    coord_equal() +
+    #coord_equal() +
     theme(axis.text.x = element_text(angle = 90, vjust=0.5, hjust=0, size=treat_text_size),
           axis.text.y = element_text(size=path_text_size),
           aspect.ratio = 1,
