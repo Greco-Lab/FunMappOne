@@ -440,7 +440,8 @@ shinyServer(function(input, output,session) {
     
     #Test plot
     #gVars$toPlot = as.grob(ggplot(mtcars, aes(x = carb)) + geom_bar())
-    #return()
+    gVars$toPlot = "value"
+    return()
     
     l1 = input$lev1
     l2 = input$lev2
