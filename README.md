@@ -1,5 +1,14 @@
 # FunMappOne
 
+### Linux system library dependencies
+
+```BASH
+libv8-3.14-dev
+libxml-2.0 
+libcurl4-openssl-dev
+libssl-dev
+```
+
 ### Install dependencies
 
 ```R
