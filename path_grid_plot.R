@@ -69,7 +69,7 @@ update_hierarchy=function(kegg_hierarchy,lev1_content,lev2_content,lev3_content)
 #return a list of (matrix, subHierarchy) one element for each distinct collapsing level
 # the value is computed summarising row elements with the provided function col_fun (default is median)
 collapse_paths <- function (kegg_hierarchy,kegg_mat_cell, collapse_level=1,col_fun=function(x){median(x,na.rm = T)}) {
-  save(kegg_hierarchy,kegg_mat_cell,collapse_level,col_fun, file="demo/collapse_path.RData")
+  #save(kegg_hierarchy,kegg_mat_cell,collapse_level,col_fun, file="demo/collapse_path.RData")
   
   #select pathways that are present in the matrix
   hierarchy_sub <- kegg_hierarchy[kegg_hierarchy$ID %in% colnames(kegg_mat_cell),]
@@ -131,8 +131,8 @@ collapse_paths <- function (kegg_hierarchy,kegg_mat_cell, collapse_level=1,col_f
 # level_col   level (column number) from the hierarchy used to group columns (pathways)
 
 plot_grid <- function(path_mat,path_hier, title="", experiment_ann=c(),discrete=F,square_colors=c(),color_leg=c(),level_col=1,treat_text_size=8,path_text_size=6) {
-  save(path_mat, path_hier,experiment_ann,title,discrete,square_colors,color_leg,
-       level_col,treat_text_size,path_text_size,file="demo/demo_plot.RData")
+  #save(path_mat, path_hier,experiment_ann,title,discrete,square_colors,color_leg,
+  #     level_col,treat_text_size,path_text_size,file="demo/demo_plot.RData")
   
   #path_mat = path_mat[rownames(experiment_ann),]  
   #define the groups from the hierarchy and the chosen level
