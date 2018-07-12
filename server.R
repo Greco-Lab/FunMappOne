@@ -418,9 +418,9 @@ shinyServer(function(input, output,session) {
   
   output$heatmap <- renderPlot({
     shiny::validate(need(expr = !is.null(gVars$toPlot),message = "No data to plot") )
-    #plot(gVars$toPlot)
     print(class(gVars$toPlot))
-    print(gVars$toPlot)
+    #plot(gVars$toPlot)
+    gVars$toPlot
   })
   
   observeEvent(input$do, {
@@ -508,7 +508,8 @@ shinyServer(function(input, output,session) {
     ########################################################
     #gVars$toPlot = plot_grid(path_mat = mat_to_Plot,path_hier = hier,experiment_ann =  gVars$exp_ann,discrete =  isDiscrete,level_col = as.numeric(input$level),square_colors=c(),color_leg=c(),path_text_size = 12,treat_text_size = 12)
 
-    gVars$toPlot = plot_grid(path_mat = mat_to_Plot,path_hier = hier,experiment_ann =  gVars$exp_ann,discrete =  isDiscrete,level_col = max(1,as.numeric(input$level)-1),square_colors=c(),color_leg=c(),path_text_size = 12,treat_text_size = 12)
+    #gVars$toPlot = plot_grid(path_mat = mat_to_Plot,path_hier = hier,experiment_ann =  gVars$exp_ann,discrete =  isDiscrete,level_col = max(1,as.numeric(input$level)-1),square_colors=c(),color_leg=c(),path_text_size = 12,treat_text_size = 12)
+    gVars$toPlot = plot(c(1:10),c(1:10))
     
     
     print("afterPLOTSPLOTSPLOTSPLOTSPLOTSPLOTSPLOTS")
