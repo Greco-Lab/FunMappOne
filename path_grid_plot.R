@@ -225,7 +225,7 @@ plot_grid <- function(path_mat,path_hier, title="", experiment_ann=c(),discrete=
   }
   
   #afrer faceting we need to open the ggplot object to put different row/column label colors to different facets
-  png("NULL")
+  png(file.path(tempdir(),"veer.png"))
   gplot <- ggplotGrob( p )
   dev.off()
   nms <- lapply( gplot$grobs , function(x) names( x[]$children ) )
