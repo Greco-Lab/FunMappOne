@@ -1,4 +1,6 @@
 library(shiny)
+library(shinyjs)
+
 appCSS <- "
 #loading-content {
 position: absolute;
