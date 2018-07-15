@@ -1,6 +1,6 @@
 # FunMappOne
 
-## Using the FunMappOne Docker image
+## Running the FunMappOne Docker image
 
 A FunMappOne docker image is available at https://hub.docker.com/r/grecolab/funmappone/
 
@@ -47,7 +47,8 @@ if(length(cran_pkgs.inst)>0){
 }
 ```
 
-### Run FunMappOne from GitHub
+### Run FunMappOne 
+#### from GitHub
 ```R
 # Load 'shiny' library
 library(shiny)
@@ -56,7 +57,7 @@ library(shinyjs)
 runGitHub("FunMappOne", "Greco-Lab")
 ```
 
-### Or run FunMappOne locally
+#### from a local copy 
 ```R
   # Clone the git repository
   git clone https://github.com/Greco-Lab/FunMappOne FunMappOne
