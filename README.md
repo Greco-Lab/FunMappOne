@@ -48,7 +48,7 @@ if(length(cran_pkgs.inst)>0){
 ```
 
 ### Run FunMappOne 
-#### from GitHub
+#### From GitHub
 ```R
 # Load 'shiny' library
 library(shiny)
@@ -57,7 +57,7 @@ library(shinyjs)
 runGitHub("FunMappOne", "Greco-Lab")
 ```
 
-#### from a local copy 
+#### From a local copy 
 ```R
   # Clone the git repository
   git clone https://github.com/Greco-Lab/FunMappOne FunMappOne
