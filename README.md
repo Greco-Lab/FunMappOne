@@ -1,5 +1,14 @@
 # FunMappOne
 
+## Using the FunMappOne Docker image
+
+A FunMappOne docker image is available at https://hub.docker.com/r/grecolab/funmappone/
+
+All you need to do is to downalad the image with docker "docker pull grecolab/funmappone"
+and run it by mapping the Docker poer 3838 on the host port 8787.
+
+## Installing FunMappOne your local system 
+
 ### Linux system library dependencies
 
 ```BASH
@@ -37,6 +46,7 @@ if(length(cran_pkgs.inst)>0){
   }
 }
 ```
+
 ### Run FunMappOne from GitHub
 ```R
 # Load 'shiny' library
@@ -46,12 +56,19 @@ library(shinyjs)
 runGitHub("FunMappOne", "Greco-Lab")
 ```
 
-#### How to run locally
+### Or run FunMappOne locally
 ```R
   # Clone the git repository
   git clone https://github.com/Greco-Lab/FunMappOne FunMappOne
-
   # Start R session and run by using runApp()
   library(shiny)
+  library(shinyjs)
   runApp("FunMappOne/")
 ```
+
+## Using FunMappOne 
+
+Once your FunMappOne instance is istalled and runnig just open your browser and visit:
+http://localhost:8787/FunMappOne
+
+If everything has been installed correctly the FunMappOne welcome page should be now available.
