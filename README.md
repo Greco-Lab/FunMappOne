@@ -53,7 +53,7 @@ if(length(cran_pkgs.inst)>0){
 library(shiny)
 library(shinyjs)
 # run on the host port 8787 (or whaterver port you want to map on your system)
-runGitHub("FunMappOne", "Greco-Lab", port=8787)
+runGitHub("FunMappOne", "Greco-Lab")
 ```
 
 ### or from a local copy 
@@ -64,5 +64,5 @@ runGitHub("FunMappOne", "Greco-Lab", port=8787)
   library(shiny)
   library(shinyjs)
   # run on the host port 8787 (or whaterver port you want to map on your system)
-  runApp("../FunMappOne/", port=8787)
+  runApp("../FunMappOne/")
 ```
