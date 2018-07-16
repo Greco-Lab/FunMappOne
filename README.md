@@ -75,7 +75,7 @@ runGitHub("FunMappOne", "Greco-Lab",port=8787)
 
 ## Using FunMappOne 
 
-Once your FunMappOne instance is istalled and runnig just open your browser and visit:
+Once your FunMappOne instance is istalled and runnig just open your browser and visit (if you choose to map to other port replace it in the address below):
 http://localhost:8787/FunMappOne
 
 If everything has been installed correctly the FunMappOne welcome page should be now available.
