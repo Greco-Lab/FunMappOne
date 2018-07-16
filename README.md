@@ -6,24 +6,6 @@ If you don't have docker installed on your system you can install it by followin
 
 The FunMappOne docker image is available at https://hub.docker.com/r/grecolab/funmappone
 
-### Pull the FunMappOne docker image
-
-```BASH
-#from the terminal
-docker pull grecolab/funmappone
-```
-
-### Run the FunMappOne docker image, map http port 3838 on the host port 8787
-```BASH
-#from the terminal
-docker run --rm -p 8787:3838 grecolab/funmappone
-```
-
-### Launch FunMappOne 
-Open your browser and visit (if you choose to map to other port replace 8787 the url with the correct one):
-http://localhost:8787/FunMappOne
-
-FunMappOne welcome page should be now available.
 
 ## Using FunMappOne source from GitHub
 
