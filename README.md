@@ -20,10 +20,10 @@ docker run --rm -p 8787:3838 grecolab/funmappone
 ```
 
 ### Using FunMappOne 
-Once your FunMappOne instance is istalled and runnig just open your browser and visit (if you choose to map to other port replace 8787 the url with the correct one):
+Open your browser and visit (if you choose to map to other port replace 8787 the url with the correct one):
 http://localhost:8787/FunMappOne
 
-If everything has been installed correctly the FunMappOne welcome page should be now available.
+FunMappOne welcome page should be now available.
 
 ## Installing FunMappOne your local system 
 
