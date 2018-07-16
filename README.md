@@ -9,8 +9,14 @@ If you don't have docker installed on your system you can install it by followin
 All you need to do is to downalad the image with docker and run it by mapping 
 the Docker shiny http port 3838 on the host port 8787 (or whaterver port you want to map on your system).
 
+### Pull the FunMappOne docker image
+
 ```From the terminal
 docker pull grecolab/funmappone
+```
+
+### Run the FunMappOne docker image
+```From the terminal
 docker run --rm -p 8787:3838 grecolab/funmappone
 ```
 
