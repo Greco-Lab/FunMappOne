@@ -4,8 +4,13 @@
 
 A FunMappOne docker image is available at https://hub.docker.com/r/grecolab/funmappone/
 
-All you need to do is to downalad the image with docker "docker pull grecolab/funmappone"
-and run it by mapping the Docker http port 3838 on the host port 8787.
+All you need to do is to downalad the image with docker and run it by mapping 
+the Docker shiny http port 3838 on the host port 8787 (or whaterver port you want to map on your system).
+
+```From the terminal
+docker pull grecolab/funmappone
+docker run --rm -p 8787:3838 grecolab/funmappone
+```
 
 ## Installing FunMappOne your local system 
 
@@ -53,8 +58,8 @@ if(length(cran_pkgs.inst)>0){
 # Load 'shiny' library
 library(shiny)
 library(shinyjs)
-# Using runGitHub
-runGitHub("FunMappOne", "Greco-Lab")
+# run on the host port 8787 (or whaterver port you want to map on your system)
+runGitHub("FunMappOne", "Greco-Lab",port=8787)
 ```
 
 #### From a local copy 
@@ -64,7 +69,8 @@ runGitHub("FunMappOne", "Greco-Lab")
   # Start R session and run by using runApp()
   library(shiny)
   library(shinyjs)
-  runApp("FunMappOne/")
+  # run on the host port 8787 (or whaterver port you want to map on your system)
+  runApp("../FunMappOne/",port=8787)
 ```
 
 ## Using FunMappOne 
