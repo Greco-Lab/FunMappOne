@@ -4,7 +4,7 @@
 
 If you don't have docker installed on your system you can install it by following the instructions at  https://www.docker.com/get-docker.
 
-A FunMappOne docker image is available at https://hub.docker.com/r/grecolab/funmappone
+The FunMappOne docker image is available at https://hub.docker.com/r/grecolab/funmappone
 
 ### Pull the FunMappOne docker image
 
@@ -25,7 +25,7 @@ http://localhost:8787/FunMappOne
 
 FunMappOne welcome page should be now available.
 
-## Installing FunMappOne your local system 
+## Using FunMappOne source from GitHub
 
 ### Linux system library dependencies
 
@@ -35,7 +35,7 @@ libxml2-dev
 libssl-dev
 ```
 
-### Install dependencies
+### Install R dependencies
 
 ```R
 #Install Bioconductor dependencies
@@ -71,7 +71,7 @@ if(length(cran_pkgs.inst)>0){
 library(shiny)
 library(shinyjs)
 # run on the host port 8787 (or whaterver port you want to map on your system)
-runGitHub("FunMappOne", "Greco-Lab",port=8787)
+runGitHub("FunMappOne", "Greco-Lab", port=8787)
 ```
 
 ### or from a local copy 
@@ -82,5 +82,5 @@ runGitHub("FunMappOne", "Greco-Lab",port=8787)
   library(shiny)
   library(shinyjs)
   # run on the host port 8787 (or whaterver port you want to map on your system)
-  runApp("../FunMappOne/",port=8787)
+  runApp("../FunMappOne/", port=8787)
 ```
