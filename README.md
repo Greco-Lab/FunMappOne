@@ -2,23 +2,28 @@
 
 ## Running the FunMappOne Docker image (suggested)
 
-A FunMappOne docker image is available at https://hub.docker.com/r/grecolab/funmappone
-
 If you don't have docker installed on your system you can install it by following the instructions at  https://www.docker.com/get-docker.
 
-All you need to do is to downalad the image with docker and run it by mapping 
-the Docker shiny http port 3838 on the host port 8787 (or whaterver port you want to map on your system).
+A FunMappOne docker image is available at https://hub.docker.com/r/grecolab/funmappone
 
 ### Pull the FunMappOne docker image
 
-```From the terminal
+```BASH
+#from the terminal
 docker pull grecolab/funmappone
 ```
 
-### Run the FunMappOne docker image
-```From the terminal
+### Run the FunMappOne docker image, map http port 3838 on the host port 8787
+```BASH
+#from the terminal
 docker run --rm -p 8787:3838 grecolab/funmappone
 ```
+
+### Using FunMappOne 
+Once your FunMappOne instance is istalled and runnig just open your browser and visit (if you choose to map to other port replace 8787 the url with the correct one):
+http://localhost:8787/FunMappOne
+
+If everything has been installed correctly the FunMappOne welcome page should be now available.
 
 ## Installing FunMappOne your local system 
 
@@ -79,10 +84,3 @@ runGitHub("FunMappOne", "Greco-Lab",port=8787)
   # run on the host port 8787 (or whaterver port you want to map on your system)
   runApp("../FunMappOne/",port=8787)
 ```
-
-## Using FunMappOne 
-
-Once your FunMappOne instance is istalled and runnig just open your browser and visit (if you choose to map to other port replace 8787 the url with the correct one):
-http://localhost:8787/FunMappOne
-
-If everything has been installed correctly the FunMappOne welcome page should be now available.
