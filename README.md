@@ -1,6 +1,6 @@
 # FunMappOne
 
-A user-friendly graphical interface that allows to visualize the functional annotations of one or multiple experiments at once.
+A user-friendly graphical interface that allows to visualize and summarize the functional annotations of one or multiple molecular biology experiments at once.
 
 ## Running the FunMappOne Docker image (suggested)
 
