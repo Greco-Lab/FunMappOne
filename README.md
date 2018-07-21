@@ -1,5 +1,7 @@
 # FunMappOne
 
+A user-friendly graphical interface that allows to visualize the functional annotations of one or multiple experiments at once.
+
 ## Running the FunMappOne Docker image (suggested)
 
 If you don't have docker installed on your system you can install it by following the instructions at  https://www.docker.com/get-docker.
