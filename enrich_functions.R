@@ -210,7 +210,7 @@ convert_genes = function(organism = "hsapiens", GList, annType = "SYMBOL"){
     return(GList)
   }
   
-  for(i in 1:GList){
+  for(i in 1:length(GList)){
     M=GList[[i]]
     genes = M[,1]
     selectAnnDF <- AnnotationDbi::select(orgDB, keys=genes, columns="SYMBOL", keytype=annType)
@@ -218,13 +218,26 @@ convert_genes = function(organism = "hsapiens", GList, annType = "SYMBOL"){
     if(length(toRem)>0){
       selectAnnDF = selectAnnDF[-toRem,]
     }
-    M = M[which(M[,1] %in% selectAnnDF[,1]),]
+    
+    
+    #remove eventual duplicates 
+    selectAnnDF = selectAnnDF[!duplicated(selectAnnDF$SYMBOL),]
+    
+    M = M[M[,1] %in% selectAnnDF[,1],]
+    # macke sure they match by the key type
+    matches = match(selectAnnDF[,1],M[,1])
+    all(M$ID[matches] == selectAnnDF[,1])
+    M[matches,1] = selectAnnDF[,2]
+    
+    #update gene symbols
     GList[[i]] = M
+    
+    # M = M[which(M[,1] %in% selectAnnDF[,1]),]
+    # GList[[i]] = M
   }
   
   return(GList)
 }
-
 
 
   
