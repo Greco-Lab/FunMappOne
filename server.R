@@ -530,6 +530,15 @@ shinyServer(function(input, output,session) {
   observeEvent(input$resetCluster,{
     gVars$exp_ann = gVars$pheno#cbind(c(rep(1:5,5),1),rownames(gVars$KEGG_MAT))
     gVars$clust_mat = NULL
+    
+    if("All" %in% gVars$samplesID){
+      #  print("I WANT ALL SAMPLES")
+      gVars$toPlotMap = gVars$KEGG_MAT
+    }else{
+      gVars$toPlotMap = gVars$KEGG_MAT[rownames(gVars$KEGG_MAT) %in% gVars$samplesID,]
+    }
+    
+    
     #gVars$toPlotMap = gVars$toPlotMap
     #gVars$toPlot = plot_function(gcl = gVars$clust_mat,kegg_h = gVars$reduced_kegg_hierarchy,plt_mat = gVars$toPlotMap,input_n=as.numeric(input$level))
     kegg_nano_1 <- collapse_paths(kegg_hierarchy = gVars$reduced_kegg_hierarchy,kegg_mat_cell = gVars$toPlotMap, collapse_level = as.numeric(input$level))
@@ -679,7 +688,7 @@ shinyServer(function(input, output,session) {
     }
     
     print(gVars$exp_ann)
-    
+    gVars$toPlotMap = gVars$clust_mat
     #gVars$toPlot = plot_function(kegg_h = gVars$reduced_kegg_hierarchy,plt_mat = gVars$clust_mat,input_n=as.numeric(input$level))
     kegg_nano_1 <- collapse_paths(kegg_hierarchy = gVars$reduced_kegg_hierarchy,kegg_mat_cell = gVars$toPlotMap, collapse_level = as.numeric(input$level))
     #extract collapsed matrix and collapsed hierarachy
