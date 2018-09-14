@@ -156,7 +156,7 @@ kegg_mat_fc <- function(EnrichDatList,hierarchy,GList, summ_fun=median) {
           if(kegg$annID[kg] %in% colnames(kegg_mat_cell) ){
             genes_in_path <- unlist(strsplit(as.character(kegg$gID[kg]),","))
             MM = GList[[i]]
-            summFC <- summ_fun(MM[tolower(MM[,1]) %in% tolower(genes_in_path),2])
+            summFC <- summ_fun(as.numeric(MM[tolower(MM[,1]) %in% tolower(genes_in_path),2]))
             kegg_mat_cell[conmp_names[[i]],kegg$annID[kg]] <- summFC
           }else{
             #print(paste(kegg$annID[kg],"not found in the provided kegg hierarchy"))
