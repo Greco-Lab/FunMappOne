@@ -191,13 +191,13 @@ shinyServer(function(input, output,session) {
     }
     colnames(M) = colnames(DF)
     #print(M)
-    if(input$fileType == "genesFC"){
-      idx = 1:ncol(M)
-      M1 = matrix(M[1,idx %% 2 == 1], 1,ncol(M)/2)
-      colnames(M1) = colnames(M)[idx %% 2 == 1]
-      #print(M1)
-      return(M1)
-    }
+    #if(input$fileType == "genesFC"){
+    #  idx = 1:ncol(M)
+    #  M1 = matrix(M[1,idx %% 2 == 1], 1,ncol(M)/2)
+    #  colnames(M1) = colnames(M)[idx %% 2 == 1]
+    #  #print(M1)
+    #  return(M1)
+    #}
     return(M)
   })
   
