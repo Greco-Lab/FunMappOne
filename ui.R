@@ -46,7 +46,7 @@ navbarPage("FunMappOne",id = "page_id",
                           column(6,radioButtons("disp", "Display",choices = c(Head = "head", All = "all"),selected = "head"))
                           ),
                         #textInput("nSample", label = h3("Number of Samples"), value = "Enter text..."),
-                        fileInput("file1", "Choose CSV File",
+                        fileInput("file1", "Choose Excel File",
                                   multiple = FALSE,
                                   accept = c("text/csv/xlsx",
                                              "text/comma-separated-values,text/plain/excel",
