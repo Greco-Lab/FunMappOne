@@ -156,15 +156,15 @@ navbarPage("FunMappOne",id = "page_id",
                       mainPanel(
                         wellPanel(
                           #fluidRow(tableOutput("contents")),
-                          fluidRow(dataTableOutput("contents")),
+                          fluidRow(DT::dataTableOutput("contents")),
                           tags$hr(),
                           
                           fluidRow(textOutput("updatedTable")),
-                          fluidRow(dataTableOutput("colSums"))
+                          fluidRow(DT::dataTableOutput("colSums"))
                           ),
                         wellPanel(
                           fluidRow(textOutput("updatedPat")),
-                          fluidRow(dataTableOutput("colSumsPat"))
+                          fluidRow(DT::dataTableOutput("colSumsPat"))
                         )
                       )      
                     )# end sidebar layout
