@@ -1,5 +1,6 @@
 library(shiny)
 library(shinyjs)
+library(shinyBS)
 
 appCSS <- "
 #loading-content {
@@ -178,8 +179,12 @@ navbarPage("FunMappOne",id = "page_id",
                     ),
                     fluidRow(
                       column(4,uiOutput("chose_lev1")),
+                      shinyBS::bsTooltip(id = "chose_lev1",title = "Note: remove ALL from the list for specific selection.",placement = "bottom"),
                       column(4,uiOutput("chose_lev2")),
-                      column(3,uiOutput("chose_lev3"))
+                      shinyBS::bsTooltip(id = "chose_lev2",title = "Note: remove ALL from the list for specific selection.",placement = "bottom"),
+                      column(3,uiOutput("chose_lev3")),
+                      shinyBS::bsTooltip(id = "chose_lev3",title = "Note: remove ALL from the list for specific selection.",placement = "bottom")
+                      
                     ),
                     fluidRow(
                       uiOutput("selectColumn")

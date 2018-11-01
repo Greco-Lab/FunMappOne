@@ -178,7 +178,7 @@ get_kegg_hierarchy <- function(){
 }
 
 enrich = function(x,type,org,pval){
-  #’mmusculus’
+  #???mmusculus???
   print("before gprofiler")
   out = gProfileR::gprofiler(query = x[,1],src_filter=type,organism=org,max_p_value = pval)
   
@@ -203,6 +203,9 @@ enrich = function(x,type,org,pval){
 }
 
 convert_genes = function(organism = "hsapiens", GList, annType = "SYMBOL"){
+  
+  save(GList,organism, annType,file = "inside_convert_genes.RData")
+  
   orgLibs <- list("Human"=org.Hs.eg.db, "Mouse"=org.Mm.eg.db)
   orgDB <- orgLibs[[organism]]
   
@@ -212,8 +215,17 @@ convert_genes = function(organism = "hsapiens", GList, annType = "SYMBOL"){
   
   for(i in 1:length(GList)){
     M=GList[[i]]
+    print("accessing M[,1]")
+    print(class(M))
+    print(dim(M))
     genes = M[,1]
+    print("selected genes")
+    print(genes)
+    
     selectAnnDF <- AnnotationDbi::select(orgDB, keys=genes, columns="SYMBOL", keytype=annType)
+    
+    print(head(selectAnnDF))
+    
     toRem = which(is.na(selectAnnDF[,2]))
     if(length(toRem)>0){
       selectAnnDF = selectAnnDF[-toRem,]
@@ -224,9 +236,20 @@ convert_genes = function(organism = "hsapiens", GList, annType = "SYMBOL"){
     selectAnnDF = selectAnnDF[!duplicated(selectAnnDF$SYMBOL),]
     
     M = M[M[,1] %in% selectAnnDF[,1],]
+    
+    print("----- > head M")
+    print(head(M))
+    
+    M = as.matrix(M)
+    print("----- > head M after dataframe")
+    print(head(M))
+    
     # macke sure they match by the key type
     matches = match(selectAnnDF[,1],M[,1])
-    all(M$ID[matches] == selectAnnDF[,1])
+    print("matches")
+    print(matches)
+    
+    #all(M$ID[matches] == selectAnnDF[,1])
     M[matches,1] = selectAnnDF[,2]
     
     #update gene symbols

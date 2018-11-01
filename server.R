@@ -1,5 +1,6 @@
 library(shiny)
 library(shinyjs)
+library(shinyBS)
 library(ggplotify)
 library(RColorBrewer)
 library(reshape)
@@ -46,7 +47,12 @@ shinyServer(function(input, output,session) {
   })
   
   output$nClust <- renderUI({
-    selectInput("nc", "Number of clusters", 1:nrow(gVars$KEGG_MAT),multiple = FALSE,selected = 1)
+    if(is.null(gVars$KEGG_MAT)){
+      opt = c("N/A")
+    }else{
+      opt = 1:nrow(gVars$KEGG_MAT)
+    }
+    selectInput("nc", "Number of clusters", opt,multiple = FALSE,selected = 1)
   })
   
   output$chose_lev2 <- renderUI({
@@ -117,57 +123,62 @@ shinyServer(function(input, output,session) {
     # and uploads a file, head of that data file by default,
     # or all rows if selected, will be shown.
     
-    req(input$file1)
+    if(is.null(input$file1)){
+      return(NULL)
+    }
     #nSample = as.numeric(input$nSample)
-    
+    DTa = NULL
     # when reading semicolon separated files,
     # having a comma separator causes `read.csv` to error
     tryCatch(
       {
-        # DF <- read.csv(input$file1$datapath,
-        #                header = input$header,
-        #                sep = input$sep,
-        #                quote = input$quote)
-        # print(dim(DF))
-        # DF = read_excel_allsheets(filename = "geni_ctd.xlsx",tibble = FALSE)
-        
         DF = read_excel_allsheets(filename = input$file1$datapath,tibble = FALSE)
+        print(head(DF[[1]]))      
         
         GList = DF[1:(length(DF)-1)]
-        #GList = convert_genes(organism = "Human", GList=GList, annType = "SYMBOL")
-        
+        print("after GList")
+        print(length(GList))
         GList = convert_genes(organism = input$organism, GList=GList, annType = input$idtype)
-        #print(GList)
         
+        print("gene converted")
         Mp = DF[[length(DF)]]
         pheno = cbind(Mp[,2],Mp[,1])
         gVars$GList = GList
         gVars$pheno = pheno
         gVars$exp_ann = gVars$pheno
         
-        #print(gVars$pheno)
+        print(gVars$pheno)
         
         DTa = matrix("",ncol = length(GList),nrow = max(unlist(lapply(GList, FUN = nrow))))
         for(i in 1:(length(DF)-1)){
           DTa[1:nrow(GList[[i]]),i]=GList[[i]][,1]
         }
         
+        print(dim(DTa))
+        
         colnames(DTa) = names(GList)
-        #print(head(DTa))
       },
       error = function(e) {
         # return a safeError if a parsing error occurs
-        stop(safeError(e))
+        shinyjs::info(e$message)
       }
     )
-    return(DTa)
+    if(is.null(DTa)){
+      return(NULL)
+    }else{
+      return(DTa)
+    }
   })
   
   
   output$contents <- DT::renderDataTable({ #renderTable
+    print("Inside contents")
     
     DF = DATA()
+    shiny::validate(need(expr = !is.null(DF),message = "Waiting for input file!") )
+    
     if(input$disp == "head") {
+      print("header")
       return(head(DF))
     }
     else {
@@ -177,27 +188,27 @@ shinyServer(function(input, output,session) {
   })
   
   output$updatedTable <- renderText({
+    print("updata table")
     DF = DATA()
-    #x = paste("Number of Samples: ",ncol(DF),". Number of genes for each sample: ",sep="")
+    shiny::validate(need(expr = !is.null(DF),message = "") )
+    
     x = paste("Number of genes for each sample: ",sep="")
     return(x)
   })
   
   output$colSums <- DT::renderDataTable({
+    print("Inside colSums")
+    
+    
     DF = DATA()
+    shiny::validate(need(expr = !is.null(DF),message = "") )
+    
     M = matrix("",1,ncol = ncol(DF))
     for(i in 1:ncol(DF)){
       M[1,i]= sum(DF[,i]!="")
     }
     colnames(M) = colnames(DF)
-    #print(M)
-    #if(input$fileType == "genesFC"){
-    #  idx = 1:ncol(M)
-    #  M1 = matrix(M[1,idx %% 2 == 1], 1,ncol(M)/2)
-    #  colnames(M1) = colnames(M)[idx %% 2 == 1]
-    #  #print(M1)
-    #  return(M1)
-    #}
+    
     return(M)
   })
   
@@ -393,6 +404,8 @@ shinyServer(function(input, output,session) {
     
     output$updatedPat <- renderText({
       DF = DATA()
+      shiny::validate(need(expr = !is.null(DF),message = "") )
+      
       x = paste("Pathway computed! Number of pathways for each sample: ")
       
       return(x)
@@ -400,6 +413,8 @@ shinyServer(function(input, output,session) {
     
     output$colSumsPat <- DT::renderDataTable({
       DF = gVars$KEGG_MAT
+      shiny::validate(need(expr = !is.null(DF),message = "") )
+      
       M = matrix("",1,ncol = nrow(DF))
       for(i in 1:nrow(DF)){
         M[1,i]= sum(is.na(DF[i,])==FALSE)
@@ -735,5 +750,28 @@ shinyServer(function(input, output,session) {
   # ##Hide the loading message when the rest of the server function has executed
   # Sys.sleep(1)
   # shinyjs::hide(id="loading-content", anim=TRUE, animType="fade")    
+  
+  observe({
+    M = DATA()
+    if(is.null(M)){
+      shinyjs::disable("computePathways")
+    }else{
+      shinyjs::enable("computePathways")
+     
+      
+    }
+    
+    if(is.null(gVars$KEGG_MAT)){
+      shinyjs::disable("do")
+      shinyjs::disable("downloadData")
+      shinyjs::disable("doCluster")
+      shinyjs::disable("resetCluster")
+    }else{
+      shinyjs::enable("do")
+      shinyjs::enable("downloadData")
+      shinyjs::enable("doCluster")
+      shinyjs::enable("resetCluster")
+    }
+  })
   
 })

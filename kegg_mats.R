@@ -3,10 +3,17 @@ library(readxl)
 
 read_excel_allsheets <- function(filename, tibble = FALSE) {
   sheets <- readxl::excel_sheets(filename)
-  x <- lapply(sheets, function(X) readxl::read_excel(filename, sheet = X))
+  x <- lapply(sheets, function(X){ 
+    
+    y = readxl::read_excel(filename, sheet = X)
+    y[,1] = as.character(as.vector(y[[1]]))
+    y
+    })
+  
   if(!tibble) x <- lapply(x, as.data.frame)
   names(x) <- sheets
-  x
+  return(x)
+
 }
 
 #Funzione che restituisce liste di dataframe
