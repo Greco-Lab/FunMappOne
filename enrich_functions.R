@@ -210,9 +210,11 @@ convert_genes = function(organism = "hsapiens", GList, annType = "SYMBOL"){
   orgDB <- orgLibs[[organism]]
   
   if(annType == "SYMBOL"){
+    tmp = GList[[1]]
+    tmp <- AnnotationDbi::select(orgDB, keys=tmp[,1], columns="SYMBOL", keytype=annType)
     return(GList)
   }
-  
+
   for(i in 1:length(GList)){
     M=GList[[i]]
     print("accessing M[,1]")
@@ -223,6 +225,11 @@ convert_genes = function(organism = "hsapiens", GList, annType = "SYMBOL"){
     print(genes)
     
     selectAnnDF <- AnnotationDbi::select(orgDB, keys=genes, columns="SYMBOL", keytype=annType)
+    
+    # if(annType=="SYMBOL"){
+    #   selectAnnDF = cbind(selectAnnDF,selectAnnDF)
+    #   rownames(selectAnnDF) = selectAnnDF$SYMBOL
+    # }
     
     print(head(selectAnnDF))
     
