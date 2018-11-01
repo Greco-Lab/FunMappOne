@@ -177,13 +177,15 @@ shinyServer(function(input, output,session) {
     DF = DATA()
     shiny::validate(need(expr = !is.null(DF),message = "Waiting for input file!") )
     
-    if(input$disp == "head") {
-      print("header")
-      return(head(DF))
-    }
-    else {
-      return(DF)
-    }
+    # if(input$disp == "head") {
+    #   print("header")
+    #   return(head(DF))
+    # }
+    # else {
+    #   return(DF)
+    # }
+    
+    return(DF)
     
   })
   
@@ -220,7 +222,7 @@ shinyServer(function(input, output,session) {
     req(input$computePathways)
     req(input$organism)
     req(input$idtype)
-    req(input$fileType)
+    #req(input$fileType)
     
     DAT = DATA()    
     if(input$organism == "Mouse"){          
@@ -347,34 +349,40 @@ shinyServer(function(input, output,session) {
     }
     
     print(head(gVars$hierarchy))
-    if(input$fileType %in% "GenesOnly"){
-      #M = kegg_mat_p(EnrichDatList = EnrichDatList,kegg_hierarchy = kegg_hierarchy, annType="REACTOME",go_type = "BP")
+    
+    NCol = ncol(gVars$GList[[1]])
+    print("NCol -------- >>>>> ")
+    print(NCol)
+    
+    #if(input$fileType %in% "GenesOnly"){
+    if(input$MapValueType == "PVAL"){
+      print("only genes")
       M = kegg_mat_p(EnrichDatList,hierarchy = gVars$hierarchy)
     }else{
-      #print(input$aggregation)
-      #M = kegg_mat_fc(EnrichDatList = EnrichDatList,hierarchy = kegg_hierarchy,GList = GList, summ_fun=get("mean"))
       
-      # TODO: se uso i fold change voglio che la distanza sia data da FC * -log(PValue). Quindi, se uso i FC devo avere due matrici,
-      # Una per FC medio che mi da segno e una per i pvalue (chiama kegg_mat_p)
-      # Potrei dover inserire anche un terzo caso in cui ho solo i geni, piu segno che mi dice se sono up/down regolati anche se non ho 
-      # i pvalue. In quel caso la mappa mi deve dare il pvalue moltiplicato per il segno di FC (magari modifico la funzione kegg_mat_fc 
-      # per fare in modo che usa solo i segni o anche i FC )
-      M1 = kegg_mat_p(EnrichDatList,hierarchy = gVars$hierarchy)
-      M2 = kegg_mat_fc(EnrichDatList = EnrichDatList,hierarchy = gVars$hierarchy,GList = gVars$GList, summ_fun=get(input$aggregation))
+      if(NCol==1){
+        shinyjs::info("No Modification provided! Enrichment will be performed by using only pvalues")
+        M = kegg_mat_p(EnrichDatList,hierarchy = gVars$hierarchy)
+        
+      }else{
+        M1 = kegg_mat_p(EnrichDatList,hierarchy = gVars$hierarchy)
+        M2 = kegg_mat_fc(EnrichDatList = EnrichDatList,hierarchy = gVars$hierarchy,GList = gVars$GList, summ_fun=get(input$aggregation))
+        
+        print("LOGGGGG")
+        
+        # if(input$MapValueType == "PVAL"){
+        #   M = M1
+        # }
+        if(input$MapValueType == "FC"){
+          M = M2
+        }
+        if(input$MapValueType == "FCPV"){
+          M = M2 * -log(M1)
+        }
+        rownames(M) = rownames(M1)
+        colnames(M) = colnames(M1)
+      }
 
-      print("LOGGGGG")
-      
-      if(input$MapValueType == "PVAL"){
-        M = M1
-      }
-      if(input$MapValueType == "FC"){
-        M = M2
-      }
-      if(input$MapValueType == "FCPV"){
-        M = M2 * -log(M1)
-      }
-      rownames(M) = rownames(M1)
-      colnames(M) = colnames(M1)
     }
 
     gVars$KEGG_MAT = M
