@@ -39,6 +39,25 @@ navbarPage("FunMappOne",id = "page_id",
                     sidebarLayout(
                       sidebarPanel(
                         wellPanel(
+                          fluidRow(
+                            column(4,
+                                   radioButtons("organism","Organisms",
+                                                choices = c(human = "Human", mouse = "Mouse"),selected = "Human") 
+                            ) ,
+                            column(4,radioButtons("idtype","GeneID",
+                                                  choices = c(symbols = "SYMBOL", ensemble = "ENSEMBL",entrez = "ENTREZID"),
+                                                  selected = "SYMBOL")
+                            ),
+                            column(4,
+                                   radioButtons("continuous","Plot modification",
+                                                choices = c(value = "continuous",
+                                                            sign = "discrete"),
+                                                selected = "continuous")
+                            ) 
+                            
+                          ),
+                          tags$hr(),
+                          
                         fluidRow(
                           column(6,
                                  radioButtons("fileType","FileType",
@@ -46,74 +65,14 @@ navbarPage("FunMappOne",id = "page_id",
                                               selected = "GenesOnly") ),
                           column(6,radioButtons("disp", "Display",choices = c(Head = "head", All = "all"),selected = "head"))
                           ),
-                        #textInput("nSample", label = h3("Number of Samples"), value = "Enter text..."),
-                        fileInput("file1", "Choose Excel File",
-                                  multiple = FALSE,
-                                  accept = c("text/csv/xlsx",
-                                             "text/comma-separated-values,text/plain/excel",
-                                             ".xlsx"))
-                        
-                        # Horizontal line ----
-                         #tags$hr(),
-                         
-                        
-                        # fluidRow(column(3,
-                        #                 # Input: Checkbox if file has header ----
-                        #                 checkboxInput("header", "Header", TRUE)),
-                        #          column(3,      
-                        #                 # Input: Select separator ----
-                        #                 radioButtons("sep", "Separator",
-                        #                              choices = c(Comma = ",",
-                        #                                          Semicolon = ";",
-                        #                                          Tab = "\t"),
-                        #                              selected = ";")),
-                        #          column(3,
-                        #                 # Input: Select quotes ----
-                        #                 radioButtons("quote", "Quote",
-                        #                              choices = c(None = "",
-                        #                                          "Double Quote" = '"',
-                        #                                          "Single Quote" = "'"),
-                        #                              selected = '"')),
-                        #          column(3,
-                        #                 # Input: Select number of rows to display ----
-                        #                 radioButtons("disp", "Display",
-                        #                              choices = c(Head = "head",
-                        #                                          All = "all"),
-                        #                              selected = "head"))
-                        # )
-                        ),
-                        
-                        
-                        # # Horizontal line ----
-                        # tags$hr(),
-                        
-                        
-                        wellPanel(
-                        fluidRow(
-                          column(4,
-                                 radioButtons("organism","Organisms",
-                                              choices = c(human = "Human", mouse = "Mouse"),selected = "Human") 
-                          ) ,
-                          column(4,radioButtons("idtype","GeneID",
-                                                choices = c(symbols = "SYMBOL", ensemble = "ENSEMBL",entrez = "ENTREZID"),
-                                                selected = "SYMBOL")
+                          fileInput("file1", "Choose Excel File",
+                                    multiple = FALSE,
+                                    accept = c("text/csv/xlsx",
+                                               "text/comma-separated-values,text/plain/excel",
+                                               ".xlsx"))
                           ),
-                          column(4,
-                                 # radioButtons("continuous","Continuous or Discrete",
-                                 #              choices = c(Continuous = "continuous",
-                                 #                          Discrete = "discrete"),
-                                 #              selected = "continuous")
-                                 radioButtons("continuous","Plot modification",
-                                              choices = c(value = "continuous",
-                                                          sign = "discrete"),
-                                              selected = "continuous")
-                          ) 
-                          
-                        ),
-                        
+                        wellPanel(
                         # Horizontal line ----
-                        tags$hr(),
-                        
                         fluidRow(
                            
                               column(4,radioButtons("aggregation","Aggregation Function",
