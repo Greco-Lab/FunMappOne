@@ -49,12 +49,13 @@ navbarPage("FunMappOne",id = "page_id",
                                                   choices = c(symbols = "SYMBOL", ensemble = "ENSEMBL",entrez = "ENTREZID"),
                                                   selected = "SYMBOL")
                             ),
-                            column(4,
+                           column(4,
                                    fileInput("file1", "Choose Excel File",
                                              multiple = FALSE,
                                              accept = c("text/csv/xlsx",
                                                         "text/comma-separated-values,text/plain/excel",
                                                         ".xlsx")))
+                          )
                             # column(4,
                                    # radioButtons("continuous","Plot modification",
                                    #              choices = c(value = "continuous",
@@ -62,7 +63,7 @@ navbarPage("FunMappOne",id = "page_id",
                                    #              selected = "continuous")
                             # ) 
                             
-                          )
+                        
 
                         # fluidRow(
                         #   column(6,
@@ -80,50 +81,50 @@ navbarPage("FunMappOne",id = "page_id",
                         tags$h5("2. Functional annotation parameters"),
                         wellPanel(
                         fluidRow(
-                          column(3,radioButtons("EnrichType","Select Functional Annotation",
+                          column(6,radioButtons("EnrichType","Select Functional Annotation",
                                                 choices = c(KEGG = "KEGG", REACTOME="REACTOME",GO = "GO"),
                                                 selected = "KEGG")
                           ),
-                          column(3,radioButtons("GOType","Select GO",
+                          column(6,radioButtons("GOType","Select GO",
                                                 choices = c(BP = "BP", CC="CC",MF = "MF"),
                                                 selected = "BP")
-                          ),
-                          column(3,
+                          )),
+                        fluidRow(column(6,
                             radioButtons("MapValueType","Choose Values Type",
                                          choices = c(Pvalue = "PVAL", GenesModifications="FC",GenesModifications_PValue  = "FCPV"),
                                          selected = "FC")
                           ),
-                          column(3,selectInput(inputId = "pvalueTh", label = "P-value threshold:",choices = list(0.001,0.005,0.01,0.02,0.03,0.04,0.05,0.06,0.07,0.08,0.09),selected = 0.05)
+                          column(6,selectInput(inputId = "pvalueTh", label = "P-value threshold:",choices = list(0.001,0.005,0.01,0.02,0.03,0.04,0.05,0.06,0.07,0.08,0.09),selected = 0.05)
                     
 
-                        )
+                        ))
                        
-                      )),
+                      ),
                       tags$h5("3. Display parameters"),
                       wellPanel(
                         # Horizontal line ----
                         fluidRow(
                           
-                          column(3,radioButtons("aggregation","Aggregation Function",
+                          column(6,radioButtons("aggregation","Aggregation Function",
                                                 choices = c(min = "min", max = "max",mean = "mean",
                                                             median = "median"),
                                                 selected = "mean")  
                           ),
-                          column(3,radioButtons("pcorrection","Correction Method",
+                          column(6,radioButtons("pcorrection","Correction Method",
                                                 choices = c(fdr = "fdr", bonferroni = "bonferroni",none = "none"),
                                                 selected = "fdr")
-                          ),
+                          )),
                           
-                          column(3,radioButtons("continuous","Plot modification",
+                        fluidRow(column(6,radioButtons("continuous","Plot modification",
                                                 choices = c(value = "continuous",
                                                             sign = "discrete"),
                                                 selected = "continuous")),
-                          column(3,actionButton("computePathways","Generate Map"))
+                          column(6,actionButton("computePathways","Generate Map")))
                           
                           
                         )
                         
-                      )),
+                      ),
                         
                       mainPanel(
                         wellPanel(
