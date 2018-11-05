@@ -159,7 +159,9 @@ navbarPage("FunMappOne",id = "page_id",
                       
                     ),
                     fluidRow(
-                      uiOutput("selectColumn")
+                      uiOutput("selectColumn"),
+                      shinyBS::bsTooltip(id = "selectColumn",title = "Note: remove ALL from the list for specific selection.",placement = "bottom")
+                      
                     ),
                     fluidRow(
                       actionButton("do", "Plot Map"),
