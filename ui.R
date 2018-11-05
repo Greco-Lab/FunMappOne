@@ -42,19 +42,25 @@ navbarPage("FunMappOne",id = "page_id",
                         wellPanel(
                           fluidRow(
                             column(4,
-                                   radioButtons("organism","Organisms",
-                                                choices = c(human = "Human", mouse = "Mouse"),selected = "Human") 
+                                   radioButtons("organism","1) Organisms",
+                                                choices = c(human = "Human", mouse = "Mouse"),selected = "Human"),
+                                   shinyBS::bsTooltip(id = "organism",title = "Note: select organism and gene ID before uploading the file",placement = "bottom")
+                                   
                             ) ,
-                            column(4,radioButtons("idtype","GeneID",
+                            column(4,radioButtons("idtype","2) GeneID",
                                                   choices = c(symbols = "SYMBOL", ensemble = "ENSEMBL",entrez = "ENTREZID"),
-                                                  selected = "SYMBOL")
+                                                  selected = "SYMBOL"),
+                                   shinyBS::bsTooltip(id = "idtype",title = "Note: select organism and gene ID before uploading the file",placement = "bottom")
+                                   
+                                   
                             ),
                            column(4,
-                                   fileInput("file1", "Choose Excel File",
+                                   fileInput("file1", "3) Choose Excel File",
                                              multiple = FALSE,
                                              accept = c("text/csv/xlsx",
                                                         "text/comma-separated-values,text/plain/excel",
                                                         ".xlsx")))
+                           
                           )
                             # column(4,
                                    # radioButtons("continuous","Plot modification",
