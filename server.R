@@ -437,7 +437,8 @@ shinyServer(function(input, output,session) {
       }
       colnames(M) = rownames(DF)
       #print(M)
-      return(M)
+      DT::datatable(M, options = list(scrollX = TRUE))
+      
       
     })
     
