@@ -683,7 +683,7 @@ shinyServer(function(input, output,session) {
     #plot(hls)
     
     output$hclust_plot = renderPlot({
-      plot(hls)
+      plot(hls,xlab="", sub="",hang = -1)
       if(as.numeric(input$nc)>1){
         rect.hclust(tree = hls,k = as.numeric(input$nc))
       }
