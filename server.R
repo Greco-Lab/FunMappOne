@@ -541,8 +541,18 @@ shinyServer(function(input, output,session) {
     }
     ########################################################
     #gVars$toPlot = plot_grid(path_mat = mat_to_Plot,path_hier = hier,experiment_ann =  gVars$exp_ann,discrete =  isDiscrete,level_col = as.numeric(input$level),square_colors=c(),color_leg=c(),path_text_size = 12,treat_text_size = 12)
-
-    gVars$toPlot = plot_grid(path_mat = mat_to_Plot,path_hier = hier,experiment_ann =  gVars$exp_ann,discrete =  isDiscrete,level_col = max(1,as.numeric(input$level)-1),square_colors=c(),color_leg=c(),path_text_size = 12,treat_text_size = 12)
+    if(input$doGrouping){
+      print("grouping selected")
+      gVars$toPlot = plot_grid(path_mat = mat_to_Plot,path_hier = hier,experiment_ann =  gVars$exp_ann,discrete =  isDiscrete,level_col = max(1,as.numeric(input$level)-1),square_colors=c(),color_leg=c(),path_text_size = 12,treat_text_size = 12)
+    }else{
+      print("grouping NOT selected")
+      level_n = max(1,as.numeric(input$level)-1)
+      fake_hier = hier
+      fake_hier[,level_n] = rep("",nrow(fake_hier))
+     
+      gVars$toPlot = plot_grid(path_mat = mat_to_Plot,path_hier = fake_hier,experiment_ann = gVars$exp_ann ,discrete =  isDiscrete,level_col =level_n,square_colors=c(),color_leg=c(),path_text_size = 12,treat_text_size = 12)
+      
+    }
     
     print("afterPLOTSPLOTSPLOTSPLOTSPLOTSPLOTSPLOTS")
   })
@@ -608,12 +618,22 @@ shinyServer(function(input, output,session) {
       isDiscrete = F
     }
     ########################################################
-    #gVars$toPlot = plot_grid(path_mat = mat_to_Plot,path_hier = hier,experiment_ann =  gVars$exp_ann,discrete =  isDiscrete,level_col = as.numeric(input$level),square_colors=c(),color_leg=c(),path_text_size = 12,treat_text_size = 12)
+
+    #gVars$toPlot = plot_grid(path_mat = mat_to_Plot,path_hier = hier,experiment_ann =  gVars$exp_ann,discrete =  isDiscrete,level_col = max(1,as.numeric(input$level)-1),square_colors=c(),color_leg=c(),path_text_size = 12,treat_text_size = 12)
     
-    gVars$toPlot = plot_grid(path_mat = mat_to_Plot,path_hier = hier,experiment_ann =  gVars$exp_ann,discrete =  isDiscrete,level_col = max(1,as.numeric(input$level)-1),square_colors=c(),color_leg=c(),path_text_size = 12,treat_text_size = 12)
-    
-    
-    print("afterPLOTSPLOTSPLOTSPLOTSPLOTSPLOTSPLOTS")  
+    if(input$doGrouping){
+      print("grouping selected")
+      gVars$toPlot = plot_grid(path_mat = mat_to_Plot,path_hier = hier,experiment_ann =  gVars$exp_ann,discrete =  isDiscrete,level_col = max(1,as.numeric(input$level)-1),square_colors=c(),color_leg=c(),path_text_size = 12,treat_text_size = 12)
+    }else{
+      print("grouping NOT selected")
+      level_n = max(1,as.numeric(input$level)-1)
+      fake_hier = hier
+      fake_hier[,level_n] = rep("",nrow(fake_hier))
+      
+      gVars$toPlot = plot_grid(path_mat = mat_to_Plot,path_hier = fake_hier,experiment_ann = gVars$exp_ann ,discrete =  isDiscrete,level_col =level_n,square_colors=c(),color_leg=c(),path_text_size = 12,treat_text_size = 12)
+      
+    }
+    print("after PLOTS in reset cluster")  
 })
   
   observeEvent(input$doCluster,{
@@ -757,12 +777,23 @@ shinyServer(function(input, output,session) {
       isDiscrete = F
     }
     ########################################################
-    #gVars$toPlot = plot_grid(path_mat = mat_to_Plot,path_hier = hier,experiment_ann =  gVars$exp_ann,discrete =  isDiscrete,level_col = as.numeric(input$level),square_colors=c(),color_leg=c(),path_text_size = 12,treat_text_size = 12)
+
+    #gVars$toPlot = plot_grid(path_mat = mat_to_Plot,path_hier = hier,experiment_ann =  gVars$exp_ann,discrete =  isDiscrete,level_col = max(1,as.numeric(input$level)-1),square_colors=c(),color_leg=c(),path_text_size = 12,treat_text_size = 12)
     
-    gVars$toPlot = plot_grid(path_mat = mat_to_Plot,path_hier = hier,experiment_ann =  gVars$exp_ann,discrete =  isDiscrete,level_col = max(1,as.numeric(input$level)-1),square_colors=c(),color_leg=c(),path_text_size = 12,treat_text_size = 12)
+    if(input$doGrouping){
+      print("grouping selected")
+      gVars$toPlot = plot_grid(path_mat = mat_to_Plot,path_hier = hier,experiment_ann =  gVars$exp_ann,discrete =  isDiscrete,level_col = max(1,as.numeric(input$level)-1),square_colors=c(),color_leg=c(),path_text_size = 12,treat_text_size = 12)
+    }else{
+      print("grouping NOT selected")
+      level_n = max(1,as.numeric(input$level)-1)
+      fake_hier = hier
+      fake_hier[,level_n] = rep("",nrow(fake_hier))
+      
+      gVars$toPlot = plot_grid(path_mat = mat_to_Plot,path_hier = fake_hier,experiment_ann = gVars$exp_ann ,discrete =  isDiscrete,level_col =level_n,square_colors=c(),color_leg=c(),path_text_size = 12,treat_text_size = 12)
+      
+    }
     
-    
-    print("afterPLOTSPLOTSPLOTSPLOTSPLOTSPLOTSPLOTS")
+    print("after PLOTS in clustering")
   })
   # ##Hide the loading message when the rest of the server function has executed
   # Sys.sleep(1)

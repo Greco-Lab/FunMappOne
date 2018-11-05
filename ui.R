@@ -170,6 +170,7 @@ navbarPage("FunMappOne",id = "page_id",
                       
                     ),
                     fluidRow(
+                      checkboxInput("doGrouping", "Show categories", value = TRUE),
                       actionButton("do", "Plot Map"),
                       downloadButton('downloadData')
                     )
