@@ -171,6 +171,12 @@ shinyServer(function(input, output,session) {
   })
   
   
+  
+  output$results <- DT::renderDataTable(
+    mtcars,
+    options = list(scrollX = TRUE)
+  )
+  
   output$contents <- DT::renderDataTable({ #renderTable
     print("Inside contents")
     
@@ -185,7 +191,8 @@ shinyServer(function(input, output,session) {
     #   return(DF)
     # }
     
-    return(DF)
+    DT::datatable(DF, options = list(scrollX = TRUE))
+    #return(DF)
     
   })
   
@@ -210,8 +217,9 @@ shinyServer(function(input, output,session) {
       M[1,i]= sum(DF[,i]!="")
     }
     colnames(M) = colnames(DF)
+    DT::datatable(M, options = list(scrollX = TRUE))
     
-    return(M)
+    #return(M)
   })
   
   
