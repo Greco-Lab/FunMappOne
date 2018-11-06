@@ -170,10 +170,11 @@ navbarPage("FunMappOne",id = "page_id",
                       
                     ),
                     fluidRow(
-                      checkboxInput("doGrouping", "Show categories", value = TRUE),
-                      actionButton("do", "Plot Map"),
-                      downloadButton('downloadData')
-                    )
+                      column(4,checkboxInput("doGrouping", "Show categories", value = TRUE)),
+                      column(4,actionButton("do", "Plot Map")),
+                      column(4,p("NOTE: press the Plot Mat button every time you update the map!"))
+                    ),
+                    fluidRow(downloadButton('downloadData'))
                   ),
                   wellPanel(
                     fluidRow(
@@ -191,7 +192,7 @@ navbarPage("FunMappOne",id = "page_id",
                 mainPanel(
                   tabsetPanel(
                     # 
-                  tabPanel("Heatmap", wellPanel(fluidRow(column(12,align="left",shinycssloaders::withSpinner(plotOutput(outputId="heatmap"), type=6))))),
+                  tabPanel("Heatmap",fluidRow(column(12,align="left",shinycssloaders::withSpinner(plotOutput(outputId="heatmap"), type=6)))),
                     tabPanel("Clustering",plotOutput(outputId="hclust_plot", width = "100%"))
                   )
                   #fluidRow(plotOutput(outputId="heatmap",height = 900))
