@@ -170,11 +170,17 @@ navbarPage("FunMappOne",id = "page_id",
                       
                     ),
                     fluidRow(
-                      column(4,checkboxInput("doGrouping", "Show categories", value = TRUE)),
-                      column(4,actionButton("do", "Plot Map")),
-                      column(4,p("NOTE: press the Plot Mat button every time you update the map!"))
+                      column(6,checkboxInput("doGrouping", "Show categories", value = TRUE)),
+                      column(6,actionButton("do", "Plot Map")),
+                      shinyBS::bsTooltip(id = "do",title ="NOTE: press the Plot Mat button every time you update the map!",placement = "bottom")
+                      
                     ),
-                    fluidRow(downloadButton('downloadData'))
+                    fluidRow(
+                      column(4,textInput(inputId ="img_width", value = 15,label = "Width")), #width
+                      column(4,textInput(inputId ="img_height", value = 30,label = "Height")),
+                      column(4,downloadButton('downloadData')),
+                      shinyBS::bsTooltip(id = "downloadData",title ="NOTE: when downloading, specify image size in inches ",placement = "bottom")
+                    )
                   ),
                   wellPanel(
                     fluidRow(

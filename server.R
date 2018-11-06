@@ -597,69 +597,49 @@ shinyServer(function(input, output,session) {
     print("afterPLOTSPLOTSPLOTSPLOTSPLOTSPLOTSPLOTS")
   })
   
-  # output$downloadData <- downloadHandler(
-  #   filename = paste(tempdir(),"/maps.pdf",sep=""),
-  #   content = function(file) {
-  #     dimMat=gVars$dimMat # This stuff here was added
-  #     rCount = gVars$nPath
-  #     cCount = gVars$nSamples
-  #     
-  #     wt = 30 #changed from 7 to 30/15 
-  #     ht = 15
-  #     if ((val1 <- round(cCount/3))>ht){
-  #       ht = val1
-  #     }
-  #     if ((val2 <- round(rCount/3))>wt){
-  #       wt = val2
-  #     }
-  #     #pdf("www/map.pdf",width = 13,height = 20)
-  #     cat("height: ", ht, "\n")
-  #     cat("width: ", wt, "\n")
-  #     
-  #     pdf("www/map.pdf",width = wt,height = ht)
-  #     plot(gVars$toPlot)
-  #     dev.off()
-  #     
-  #     file.copy("www/map.pdf", file)
-  #   }
-  # )
-  # 
+#   output$downloadData <- downloadHandler(
+#     filename = paste(tempdir(),"/maps.pdf",sep=""),
+#     content = function(file) {
+#       dimMat=gVars$dimMat # This stuff here was added
+#       rCount = gVars$nPath
+#       cCount = gVars$nSamples
+#       print(rCount)
+#       print(cCount)
+#       wt = 30 #changed from 7 to 30/15
+#       ht = 15
+#       if ((val1 <- round(cCount/3))>ht){
+#         ht = val1
+#       }
+#       if ((val2 <- round(rCount/3))>wt){
+#         wt = val2
+#       }
+#       #pdf("www/map.pdf",width = 13,height = 20)
+#       cat("height: ", ht, "\n")
+#       cat("width: ", wt, "\n")
+# print(wt)
+# print(ht)
+#       pdf("www/map.pdf",width = wt,height = ht)
+#       plot(gVars$toPlot)
+#       dev.off()
+# 
+#       file.copy("www/map.pdf", file)
+#     }
+#   )
+
   
   output$downloadData <- downloadHandler(
     filename = paste(tempdir(),"/maps.pdf",sep=""),
+  
     content = function(file) {
-      pdf("www/map.pdf",width = 15,height = 30)
+      wd = as.numeric(input$img_width)
+      hi = as.numeric(input$img_height)
+      
+      pdf("www/map.pdf",width = wd,height = hi)
       plot(gVars$toPlot)
       dev.off()
 
       file.copy("www/map.pdf", file)
     }
-
-    # , height = function(){
-    #   shiny::validate(need(expr = !is.null(gVars$toPlot),message = "No data to plot") )
-    #   rCount = nrow(gVars$toPlotMap)
-    #   print("Number of rows ---> ",rCount)
-    #   wt = 30 #changed from 7 to 30/15
-    #   ht = 15 #changed from 7 to 30/15
-    #   if ((val1 <- round(rCount/3))>ht){
-    #     ht = val1
-    #   }
-    #   return(ht)
-    # }, width =function(){
-    #   shiny::validate(need(expr = !is.null(gVars$toPlot),message = "No data to plot") )
-    #
-    #   cCount = nrow(gVars$toPlotMap)
-    #   print("Number of columns ---> ",cCount)
-    #
-    #   wt = 30 #changed from 7 to 30/15
-    #   ht = 15 #changed from 7 to 30/15
-    #
-    #   if ((val2 <- round(cCount/3))>wt){
-    #     wt = val2
-    #   }
-    #   return(wt)
-    # }
-
   )
   
   
