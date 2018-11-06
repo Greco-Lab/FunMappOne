@@ -16,6 +16,7 @@ library(gProfileR)
 library(readxl)
 library(DT)
 library(randomcoloR)
+library(shinycssloaders)
 set.seed(12)
 
 load(file ="updated_kegg_hierarhcy.RData")
@@ -452,17 +453,30 @@ shinyServer(function(input, output,session) {
     shiny::validate(need(expr = !is.null(gVars$toPlot),message = "No data to plot"))
     print(class(gVars$toPlot))
     print(as.ggplot(gVars$toPlot))
+
+  }, width = function(){
+    if(!is.null(gVars$nSamples)){
+      #
+      mwidth = (gVars$length_path * 15) + (gVars$nSamples * 20)
+      print(paste("MY sample IS ---->", gVars$nSamples))
+      print(paste("MY path len IS ---->", gVars$length_path))
+      print(paste("MY WIDTH IS ---->", mwidth))
+      
+      mwidth = max(600, mwidth)
+      
+      return(mwidth)
+    }else{
+      return("auto")
+    }
+  },  height = function(){
     
-  }, height = function(){
-    
-    # gvars$nSamples = nrow(mat_to_Plot)
-    # gvars$nPath = ncol(mat_to_Plot)
-    
-    
-    print("MAT SIZE ----> ")
     if(!is.null(gVars$nPath)){
-      mysize = gVars$nPath* 20
+      mysize = (gVars$nPath* 20 ) + 10
       print(paste("MY HEIGHT IS ---->", mysize))
+      
+      print(paste("MY path IS ---->", gVars$nPath))
+      mysize = max(600, mysize)
+      
       return(mysize)
     }else{
       return("auto")
@@ -470,34 +484,7 @@ shinyServer(function(input, output,session) {
   })
   
 
-  
-  # , height = function(){
-  #   if(is.null(gVars$toPlotMap)){
-  #     rCount = 1
-  #   }else{
-  #     rCount = nrow(gVars$toPlotMap)
-  #   }
-  #   
-  #   wt = 30 #changed from 7 to 30/15 
-  #   ht = 15 #changed from 7 to 30/15 
-  #   if ((val1 <- round(rCount/3))>ht){
-  #     ht = val1
-  #   }
-  #   return(200)
-  # }, width =function(){
-  #   if(is.null(gVars$toPlotMap)){
-  #     cCount = 1
-  #   }else{
-  #     cCount = nrow(gVars$toPlotMap)
-  #   }
-  #   print("NUMBER OF COLUMNS --> ")
-  #   print(cCount)
-  #   print("PLOT DIMENSION -->")
-  #   print(session$clientData$output_heatmap_width)
-  #   wd = ( session$clientData$output_heatmap_width * cCount ) + 10
-  #   return(100)
-  # }
-  
+
   observeEvent(input$do, {
     # print("input lev1 is the following ---->")
     # print(input$lev1)
@@ -577,6 +564,13 @@ shinyServer(function(input, output,session) {
     print(dim(mat_to_Plot))
     gVars$nSamples = nrow(mat_to_Plot)
     gVars$nPath = ncol(mat_to_Plot)
+    
+    MLP = max(unlist(lapply(X = colnames(mat_to_Plot),FUN = nchar)))
+    gVars$length_path = MLP
+    
+    print("maximum character length ------------------->")
+    print(MLP)
+    
     
     if (input$continuous=="discrete"){
       mat_to_Plot[mat_to_Plot<0]=-1
