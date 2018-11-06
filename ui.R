@@ -190,8 +190,8 @@ navbarPage("FunMappOne",id = "page_id",
                 ),
                 mainPanel(
                   tabsetPanel(
-                    tabPanel("Heatmap", plotOutput(outputId="heatmap",height = 900)),
-                    tabPanel("Clustering",plotOutput(outputId="hclust_plot",height = 900))
+                    tabPanel("Heatmap", plotOutput(outputId="heatmap", width = "100%")),
+                    tabPanel("Clustering",plotOutput(outputId="hclust_plot", width = "100%"))
                   )
                   #fluidRow(plotOutput(outputId="heatmap",height = 900))
                 )

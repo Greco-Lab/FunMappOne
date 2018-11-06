@@ -38,7 +38,9 @@ shinyServer(function(input, output,session) {
     toPlot = NULL,
     toPlotMap = NULL,
     clust_mat = NULL,
-    samplesID = NULL
+    samplesID = NULL,
+    nSamples = NULL,
+    nPath = NULL
   )
   
   output$chose_lev1 <- renderUI({
@@ -447,15 +449,58 @@ shinyServer(function(input, output,session) {
   })
   
   output$heatmap <- renderPlot({
-    shiny::validate(need(expr = !is.null(gVars$toPlot),message = "No data to plot") )
+    shiny::validate(need(expr = !is.null(gVars$toPlot),message = "No data to plot"))
     print(class(gVars$toPlot))
-    #plot(gVars$toPlot)
     print(as.ggplot(gVars$toPlot))
+    
+  }, height = function(){
+    
+    # gvars$nSamples = nrow(mat_to_Plot)
+    # gvars$nPath = ncol(mat_to_Plot)
+    
+    
+    print("MAT SIZE ----> ")
+    if(!is.null(gVars$nPath)){
+      mysize = gVars$nPath* 20
+      print(paste("MY HEIGHT IS ---->", mysize))
+      return(mysize)
+    }else{
+      return("auto")
+    }
   })
   
+
+  
+  # , height = function(){
+  #   if(is.null(gVars$toPlotMap)){
+  #     rCount = 1
+  #   }else{
+  #     rCount = nrow(gVars$toPlotMap)
+  #   }
+  #   
+  #   wt = 30 #changed from 7 to 30/15 
+  #   ht = 15 #changed from 7 to 30/15 
+  #   if ((val1 <- round(rCount/3))>ht){
+  #     ht = val1
+  #   }
+  #   return(200)
+  # }, width =function(){
+  #   if(is.null(gVars$toPlotMap)){
+  #     cCount = 1
+  #   }else{
+  #     cCount = nrow(gVars$toPlotMap)
+  #   }
+  #   print("NUMBER OF COLUMNS --> ")
+  #   print(cCount)
+  #   print("PLOT DIMENSION -->")
+  #   print(session$clientData$output_heatmap_width)
+  #   wd = ( session$clientData$output_heatmap_width * cCount ) + 10
+  #   return(100)
+  # }
+  
   observeEvent(input$do, {
-    print("input lev1 is the following ---->")
-    print(input$lev1)
+    # print("input lev1 is the following ---->")
+    # print(input$lev1)
     need(is.null(input$lev1), "Please select a level 1 object")
     need(is.null(input$lev2), "Please select a level 2 object")
     need(is.null(input$lev3), "Please select a level 3 object")
@@ -466,22 +511,19 @@ shinyServer(function(input, output,session) {
     print("INSIDE RENDER PLOT ----->>>>")
     print("Inside object event input$do")
     
-    #Test plot
-    #gVars$toPlot = as.grob(ggplot(mtcars, aes(x = carb)) + geom_bar())
-    #return()
-    
+
     l1 = input$lev1
     l2 = input$lev2
     l3 = input$lev3
     
-    print(head(gVars$hierarchy))
+#    print(head(gVars$hierarchy))
     gVars$reduced_kegg_hierarchy = update_hierarchy(kegg_hierarchy = gVars$hierarchy ,l1,l2,l3)
-    print("Reduced Kegg hierarchy -->")
-    print(head(gVars$reduced_kegg_hierarchy))
+#    print("Reduced Kegg hierarchy -->")
+#    print(head(gVars$reduced_kegg_hierarchy))
     
     gVars$samplesID = input$colID
     
-    print(gVars$samplesID)
+#    print(gVars$samplesID)
     
     if(!is.null(gVars$clust_mat)){
       # print("I did cluster")
@@ -512,10 +554,10 @@ shinyServer(function(input, output,session) {
 
     shiny::validate(need(expr = ncol(mat)>0, message = "No result for the enrichment or the filters are too restrictive. Please enlarge your selection"))
 
-    print("Matrix dimension -->")
-    print(dim(mat))
-    print("Hierarchy dimension -->")
-    print(dim(hier))
+    # print("Matrix dimension -->")
+    # print(dim(mat))
+    # print("Hierarchy dimension -->")
+    # print(dim(hier))
     #plot the collapsed matrix
 
     if(is.null(gVars$clust_mat)){
@@ -531,7 +573,11 @@ shinyServer(function(input, output,session) {
     ############################   DISCRETIZE MAT if user chose "discrete and there are negative and positve values"
     ############################
     mat_to_Plot=mat
-
+    print("mat_to_Plot dim ------------------->")
+    print(dim(mat_to_Plot))
+    gVars$nSamples = nrow(mat_to_Plot)
+    gVars$nPath = ncol(mat_to_Plot)
+    
     if (input$continuous=="discrete"){
       mat_to_Plot[mat_to_Plot<0]=-1
       mat_to_Plot[mat_to_Plot>0]=1
@@ -566,6 +612,32 @@ shinyServer(function(input, output,session) {
       
       file.copy("www/map.pdf", file)
     }
+    
+    # , height = function(){
+    #   shiny::validate(need(expr = !is.null(gVars$toPlot),message = "No data to plot") )
+    #   rCount = nrow(gVars$toPlotMap)
+    #   print("Number of rows ---> ",rCount)
+    #   wt = 30 #changed from 7 to 30/15 
+    #   ht = 15 #changed from 7 to 30/15 
+    #   if ((val1 <- round(rCount/3))>ht){
+    #     ht = val1
+    #   }
+    #   return(ht)
+    # }, width =function(){
+    #   shiny::validate(need(expr = !is.null(gVars$toPlot),message = "No data to plot") )
+    #   
+    #   cCount = nrow(gVars$toPlotMap)
+    #   print("Number of columns ---> ",cCount)
+    #   
+    #   wt = 30 #changed from 7 to 30/15 
+    #   ht = 15 #changed from 7 to 30/15 
+    #   
+    #   if ((val2 <- round(cCount/3))>wt){
+    #     wt = val2
+    #   }
+    #   return(wt)
+    # }
+    
   )
   
   
