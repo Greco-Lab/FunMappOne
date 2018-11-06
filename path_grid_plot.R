@@ -212,7 +212,8 @@ plot_grid <- function(path_mat,path_hier, title="", experiment_ann=c(),discrete=
     #coord_equal() +
     theme(axis.text.x = element_text(angle = 90, vjust=0.5, hjust=0, size=treat_text_size),
           axis.text.y = element_text(size=path_text_size),
-          aspect.ratio = 1,
+          #aspect.ratio = 0.7,
+          #plot.margin = margin(1, 1, 1, 1, "cm"),
           strip.text.y = element_text(angle = 0,size = 9,face = "bold")) +
     scale_x_discrete(position = "top") +
     labs(x = "", y="")
