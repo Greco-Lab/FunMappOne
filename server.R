@@ -446,7 +446,7 @@ shinyServer(function(input, output,session) {
     })
     
     updateTabsetPanel(session = session,inputId = "page_id", selected = "PlotMaps")
-    
+    gVars$toPlot <- NULL
   })
   
   output$heatmap <- renderPlot({
