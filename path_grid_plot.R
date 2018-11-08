@@ -130,7 +130,7 @@ collapse_paths <- function (kegg_hierarchy,kegg_mat_cell, collapse_level=1,col_f
 # color_leg     if a discrete scale is chosen than colour legenjd for each possible value has to be provided
 # level_col   level (column number) from the hierarchy used to group columns (pathways)
 
-plot_grid <- function(path_mat,path_hier, title="", experiment_ann=c(),discrete=F,square_colors=c(),color_leg=c(),level_col=1,treat_text_size=8,path_text_size=6) {
+plot_grid <- function(path_mat,path_hier, title="", experiment_ann=c(),discrete=F,square_colors=c(),color_leg=c(),level_col=1,treat_text_size=8,path_text_size=6, asRatio = TRUE) {
   #save(path_mat, path_hier,experiment_ann,title,discrete,square_colors,color_leg,
   #     level_col,treat_text_size,path_text_size,file="demo/demo_plot.RData")
   
@@ -202,6 +202,7 @@ plot_grid <- function(path_mat,path_hier, title="", experiment_ann=c(),discrete=
     kegg_melt$value = as.numeric(as.vector(kegg_melt$value))
   }
 
+
   p <- ggplot(kegg_melt, aes(Var1, Var2, fill = value)) +
     facet_grid(path_group~experiment,scales="free",space="free",labeller = labeller(path_group=shorten)) +
     # theme(axis.text.x = element_text(colour = as.numeric(as.factor(experiment_ann))), 
@@ -212,11 +213,13 @@ plot_grid <- function(path_mat,path_hier, title="", experiment_ann=c(),discrete=
     #coord_equal() +
     theme(axis.text.x = element_text(angle = 90, vjust=0.5, hjust=0, size=treat_text_size),
           axis.text.y = element_text(size=path_text_size),
-          #aspect.ratio = 0.7,
           #plot.margin = margin(1, 1, 1, 1, "cm"),
           strip.text.y = element_text(angle = 0,size = 9,face = "bold")) +
-    scale_x_discrete(position = "top") +
-    labs(x = "", y="")
+          scale_x_discrete(position = "top") +
+          labs(x = "", y="")
+
+    if(asRatio) p = p+theme(aspect.ratio = 1)
+    
   
   if (discrete){
     p <- p + scale_fill_manual(values=colors,labels=color_leg,na.value = 'gray50')

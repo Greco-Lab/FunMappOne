@@ -152,6 +152,7 @@ navbarPage("FunMappOne",id = "page_id",
               sidebarLayout(
                 sidebarPanel(
                   wellPanel(
+                   tags$h5("1. Data Selection"),
                     fluidRow(                      
                       selectInput(inputId = "level", label = "Browse hierarchy: choose a level",choices = list(1,2,3))
                     ),
@@ -168,21 +169,30 @@ navbarPage("FunMappOne",id = "page_id",
                       uiOutput("selectColumn"),
                       shinyBS::bsTooltip(id = "selectColumn",title = "Note: remove ALL from the list for specific selection.",placement = "bottom")
                       
-                    ),
+                    )
+                  ),
+                  wellPanel(
+                    tags$h5("2. Plot section"),
+
                     fluidRow(
                       column(6,checkboxInput("doGrouping", "Show categories", value = TRUE)),
+                      column(6,checkboxInput("aspectRatio", "Keep aspect ratio", value = TRUE)),
                       column(6,actionButton("do", "Plot Map")),
                       shinyBS::bsTooltip(id = "do",title ="NOTE: press the Plot Mat button every time you update the map!",placement = "bottom")
                       
-                    ),
+                    )
+                  ),
+                  wellPanel(
+                    tags$h5("2. Download Selection"),
                     fluidRow(
                       column(4,textInput(inputId ="img_width", value = 15,label = "Width")), #width
                       column(4,textInput(inputId ="img_height", value = 30,label = "Height")),
                       column(4,downloadButton('downloadData')),
                       shinyBS::bsTooltip(id = "downloadData",title ="NOTE: when downloading, specify image size in inches ",placement = "bottom")
                     )
-                  ),
+                    ),
                   wellPanel(
+                   tags$h5("2. Clustering Selection"),
                     fluidRow(
                       column(4,uiOutput("nClust")),
                       column(4,selectInput("ClusterMethod","Select aggregation method",list("ward","complete","single"),selected = "complete")),
@@ -196,8 +206,10 @@ navbarPage("FunMappOne",id = "page_id",
                   
                 ),
                 mainPanel(
+                                    tags$h5("NOTE: if you don't see the map, scroll down."),
+
                   tabsetPanel(
-                    # 
+
                   tabPanel("Heatmap",fluidRow(column(12,align="left",shinycssloaders::withSpinner(plotOutput(outputId="heatmap"), type=6)))),
                     tabPanel("Clustering",plotOutput(outputId="hclust_plot", width = "100%"))
                   )

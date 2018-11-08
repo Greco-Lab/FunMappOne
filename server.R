@@ -446,7 +446,7 @@ shinyServer(function(input, output,session) {
     })
     
     updateTabsetPanel(session = session,inputId = "page_id", selected = "PlotMaps")
-    gVars$toPlot <- NULL
+    gVars$toPlot <- NULL # refresh plot map in the Plot Maps tab
   })
   
   output$heatmap <- renderPlot({
@@ -589,14 +589,14 @@ shinyServer(function(input, output,session) {
       print(gVars$exp_ann)
       
       #print(mat_to_Plot[1:5,1:5])      
-      gVars$toPlot = plot_grid(path_mat = mat_to_Plot,path_hier = hier,experiment_ann =  gVars$exp_ann,discrete =  isDiscrete,level_col = max(1,as.numeric(input$level)-1),square_colors=c(),color_leg=c(),path_text_size = 12,treat_text_size = 12)
+      gVars$toPlot = plot_grid(path_mat = mat_to_Plot,path_hier = hier,experiment_ann =  gVars$exp_ann,discrete =  isDiscrete,level_col = max(1,as.numeric(input$level)-1),square_colors=c(),color_leg=c(),path_text_size = 12,treat_text_size = 12, asRatio=(input$aspectRatio))
     }else{
       print("grouping NOT selected")
       level_n = max(1,as.numeric(input$level)-1)
       fake_hier = hier
       fake_hier[,level_n] = rep("",nrow(fake_hier))
      
-      gVars$toPlot = plot_grid(path_mat = mat_to_Plot,path_hier = fake_hier,experiment_ann = gVars$exp_ann ,discrete =  isDiscrete,level_col =level_n,square_colors=c(),color_leg=c(),path_text_size = 12,treat_text_size = 12)
+      gVars$toPlot = plot_grid(path_mat = mat_to_Plot,path_hier = fake_hier,experiment_ann = gVars$exp_ann ,discrete =  isDiscrete,level_col =level_n,square_colors=c(),color_leg=c(),path_text_size = 12,treat_text_size = 12, asRatio=(input$aspectRatio))
       
     }
     
@@ -703,14 +703,14 @@ shinyServer(function(input, output,session) {
     
     if(input$doGrouping){
       print("grouping selected")
-      gVars$toPlot = plot_grid(path_mat = mat_to_Plot,path_hier = hier,experiment_ann =  gVars$exp_ann,discrete =  isDiscrete,level_col = max(1,as.numeric(input$level)-1),square_colors=c(),color_leg=c(),path_text_size = 12,treat_text_size = 12)
+      gVars$toPlot = plot_grid(path_mat = mat_to_Plot,path_hier = hier,experiment_ann =  gVars$exp_ann,discrete =  isDiscrete,level_col = max(1,as.numeric(input$level)-1),square_colors=c(),color_leg=c(),path_text_size = 12,treat_text_size = 12, asRatio=(input$aspectRatio))
     }else{
       print("grouping NOT selected")
       level_n = max(1,as.numeric(input$level)-1)
       fake_hier = hier
       fake_hier[,level_n] = rep("",nrow(fake_hier))
       
-      gVars$toPlot = plot_grid(path_mat = mat_to_Plot,path_hier = fake_hier,experiment_ann = gVars$exp_ann ,discrete =  isDiscrete,level_col =level_n,square_colors=c(),color_leg=c(),path_text_size = 12,treat_text_size = 12)
+      gVars$toPlot = plot_grid(path_mat = mat_to_Plot,path_hier = fake_hier,experiment_ann = gVars$exp_ann ,discrete =  isDiscrete,level_col =level_n,square_colors=c(),color_leg=c(),path_text_size = 12,treat_text_size = 12, asRatio=(input$aspectRatio))
       
     }
     print("after PLOTS in reset cluster")  
@@ -862,14 +862,14 @@ shinyServer(function(input, output,session) {
     
     if(input$doGrouping){
       print("grouping selected")
-      gVars$toPlot = plot_grid(path_mat = mat_to_Plot,path_hier = hier,experiment_ann =  gVars$exp_ann,discrete =  isDiscrete,level_col = max(1,as.numeric(input$level)-1),square_colors=c(),color_leg=c(),path_text_size = 12,treat_text_size = 12)
+      gVars$toPlot = plot_grid(path_mat = mat_to_Plot,path_hier = hier,experiment_ann =  gVars$exp_ann,discrete =  isDiscrete,level_col = max(1,as.numeric(input$level)-1),square_colors=c(),color_leg=c(),path_text_size = 12,treat_text_size = 12, asRatio=(input$aspectRatio))
     }else{
       print("grouping NOT selected")
       level_n = max(1,as.numeric(input$level)-1)
       fake_hier = hier
       fake_hier[,level_n] = rep("",nrow(fake_hier))
       
-      gVars$toPlot = plot_grid(path_mat = mat_to_Plot,path_hier = fake_hier,experiment_ann = gVars$exp_ann ,discrete =  isDiscrete,level_col =level_n,square_colors=c(),color_leg=c(),path_text_size = 12,treat_text_size = 12)
+      gVars$toPlot = plot_grid(path_mat = mat_to_Plot,path_hier = fake_hier,experiment_ann = gVars$exp_ann ,discrete =  isDiscrete,level_col =level_n,square_colors=c(),color_leg=c(),path_text_size = 12,treat_text_size = 12, asRatio=(input$aspectRatio))
       
     }
     
