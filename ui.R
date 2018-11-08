@@ -206,7 +206,7 @@ navbarPage("FunMappOne",id = "page_id",
                   
                 ),
                 mainPanel(
-                                    tags$h5("NOTE: if you don't see the map, scroll down."),
+                                    tags$h5("scroll down to see the hole map"),
 
                   tabsetPanel(
 

@@ -42,6 +42,7 @@ shinyServer(function(input, output,session) {
     samplesID = NULL,
     nSamples = NULL,
     nPath = NULL
+    #gVars$noEnrich = NULL
   )
   
   output$chose_lev1 <- renderUI({
@@ -442,6 +443,7 @@ shinyServer(function(input, output,session) {
       #print(M)
       DT::datatable(M, options = list(scrollX = TRUE))
       
+      #if(sum(M) ==0) gVars$noEnrich = TRUE
       
     })
     
