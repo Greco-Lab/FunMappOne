@@ -141,7 +141,25 @@ kegg_mat_p <- function(EnrichDatList,hierarchy) {
     }
   }  
   
-  kegg_mat_cell <- kegg_mat_cell[,colSums(!is.na(kegg_mat_cell)) >0]
+
+  not_empty <- colSums(!is.na(kegg_mat_cell)) >0
+  print(not_empty)
+  if (sum(not_empty) == 1){
+    print("before")
+    print(kegg_mat_cell)
+
+    col_name_un <- colnames(kegg_mat_cell)[not_empty]
+    row_nams <- rownames(kegg_mat_cell)
+    kegg_mat_cell <- kegg_mat_cell[,colSums(!is.na(kegg_mat_cell)) >0]
+    kegg_mat_cell <- matrix(kegg_mat_cell, ncol=1)
+    colnames(kegg_mat_cell) <- col_name_un
+    rownames(kegg_mat_cell) <- row_nams
+    print("after")
+    print(class(kegg_mat_cell))
+  } else {
+      kegg_mat_cell <- kegg_mat_cell[,colSums(!is.na(kegg_mat_cell)) >0]
+  }
+
   
   #kegg_mat_cell <- kegg_mat_cell[,colSums(!is.na(kegg_mat_cell)) < nrow(kegg_mat_cell)]
   return(kegg_mat_cell)
@@ -171,8 +189,24 @@ kegg_mat_fc <- function(EnrichDatList,hierarchy,GList, summ_fun=median) {
         }
     }
   }  
-  kegg_mat_cell <- kegg_mat_cell[,colSums(!is.na(kegg_mat_cell)) >0]
   
+  not_empty <- colSums(!is.na(kegg_mat_cell)) >0
+  print(not_empty)
+  if (sum(not_empty) == 1){
+    print("before")
+    print(kegg_mat_cell)
+
+    col_name_un <- colnames(kegg_mat_cell)[not_empty]
+    row_nams <- rownames(kegg_mat_cell)
+    kegg_mat_cell <- kegg_mat_cell[,colSums(!is.na(kegg_mat_cell)) >0]
+    kegg_mat_cell <- matrix(kegg_mat_cell, ncol=1)
+    colnames(kegg_mat_cell) <- col_name_un
+    rownames(kegg_mat_cell) <- row_nams
+    print("after")
+    print(class(kegg_mat_cell))
+  } else {
+      kegg_mat_cell <- kegg_mat_cell[,colSums(!is.na(kegg_mat_cell)) >0]
+  }
   #kegg_mat_cell <- kegg_mat_cell[,colSums(kegg_mat_cell,na.rm = T)>0]
   return(kegg_mat_cell)
 }
