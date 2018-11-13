@@ -183,7 +183,7 @@ navbarPage("FunMappOne",id = "page_id",
                     )
                   ),
                   wellPanel(
-                    tags$h5("2. Download Selection"),
+                    tags$h5("3. Download Selection"),
                     fluidRow(
                       column(4,textInput(inputId ="img_width", value = 15,label = "Width")), #width
                       column(4,textInput(inputId ="img_height", value = 30,label = "Height")),
@@ -192,7 +192,7 @@ navbarPage("FunMappOne",id = "page_id",
                     )
                     ),
                   wellPanel(
-                   tags$h5("2. Clustering Selection"),
+                   tags$h5("4. Clustering Selection"),
                     fluidRow(
                       column(4,uiOutput("nClust")),
                       column(4,selectInput("ClusterMethod","Select aggregation method",list("ward","complete","single"),selected = "complete")),
