@@ -67,5 +67,5 @@ runGitHub("FunMappOne", "Greco-Lab")
   library(shiny)
   library(shinyjs)
   # run on the host port 8787 (or whaterver port you want to map on your system)
-  runApp("../FunMappOne/")
+  runApp("./FunMappOne/")
 ```
