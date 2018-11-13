@@ -175,9 +175,9 @@ navbarPage("FunMappOne",id = "page_id",
                     tags$h5("2. Plot section"),
 
                     fluidRow(
-                      column(6,checkboxInput("doGrouping", "Show categories", value = TRUE)),
-                      column(6,checkboxInput("aspectRatio", "Keep aspect ratio", value = TRUE)),
-                      column(6,actionButton("do", "Plot Map")),
+                      column(4,checkboxInput("doGrouping", "Show categories", value = TRUE)),
+                      column(4,checkboxInput("aspectRatio", "Keep aspect ratio", value = TRUE)),
+                      column(4,actionButton("do", "Plot Map")),
                       shinyBS::bsTooltip(id = "do",title ="NOTE: press the Plot Mat button every time you update the map!",placement = "bottom")
                       
                     )
