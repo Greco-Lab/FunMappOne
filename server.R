@@ -176,10 +176,10 @@ shinyServer(function(input, output,session) {
   
   
   
-  output$results <- DT::renderDataTable(
-    mtcars,
-    options = list(scrollX = TRUE)
-  )
+  #output$results <- DT::renderDataTable(
+  #  mtcars,
+  #  options = list(scrollX = TRUE)
+  #)
   
   output$contents <- DT::renderDataTable({ #renderTable
     print("Inside contents")
