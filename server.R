@@ -477,7 +477,7 @@ shinyServer(function(input, output,session) {
       print(paste("MY HEIGHT IS ---->", mysize))
       
       print(paste("MY path IS ---->", gVars$nPath))
-      mysize = max(600, mysize)
+      mysize = min(max(600, mysize),30e3)
       
       return(mysize)
     }else{
@@ -600,6 +600,12 @@ shinyServer(function(input, output,session) {
      
       gVars$toPlot = plot_grid(path_mat = mat_to_Plot,path_hier = fake_hier,experiment_ann = gVars$exp_ann ,discrete =  isDiscrete,level_col =level_n,square_colors=c(),color_leg=c(),path_text_size = 12,treat_text_size = 12, asRatio=(input$aspectRatio))
       
+    }
+    
+    #check for display size, pop up message if too large
+    if(!is.null(gVars$nPath) && ((gVars$nPath* 20 ) + 10) > 30e3){
+      print("exceeding dimensions")
+      shinyjs::info("Warnig: too many functional categories, the map might not be readable. Download the PDF for better resolution image.")
     }
     
     print("afterPLOTSPLOTSPLOTSPLOTSPLOTSPLOTSPLOTS")
