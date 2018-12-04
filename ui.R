@@ -206,7 +206,7 @@ navbarPage("FunMappOne",id = "page_id",
                   
                 ),
                 mainPanel(
-                                    tags$h5("scroll down to see the whole map"),
+                                    tags$h5("Use scrollbars to navigate and see the whole map"),
 
                   tabsetPanel(
 
