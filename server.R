@@ -488,6 +488,13 @@ shinyServer(function(input, output,session) {
 
 
   observeEvent(input$do, {
+    
+    shinyjs::html(id="loadingText", "Rendering Map")
+    shinyjs::show(id="loading-content")
+    on.exit({
+      print("inside on exit")
+      shinyjs::hide(id="loading-content", anim=TRUE, animType="fade")    
+    })
     # print("input lev1 is the following ---->")
     # print(input$lev1)
     need(is.null(input$lev1), "Please select a level 1 object")
@@ -658,6 +665,13 @@ shinyServer(function(input, output,session) {
   
   
   observeEvent(input$resetCluster,{
+    
+    shinyjs::html(id="loadingText", "Rendering Map")
+    shinyjs::show(id="loading-content")
+    on.exit({
+      print("inside on exit")
+      shinyjs::hide(id="loading-content", anim=TRUE, animType="fade")    
+    })
     gVars$exp_ann = gVars$pheno#cbind(c(rep(1:5,5),1),rownames(gVars$KEGG_MAT))
     gVars$clust_mat = NULL
     
@@ -725,6 +739,14 @@ shinyServer(function(input, output,session) {
 })
   
   observeEvent(input$doCluster,{
+    
+    shinyjs::html(id="loadingText", "Rendering Map")
+    shinyjs::show(id="loading-content")
+    on.exit({
+      print("inside on exit")
+      shinyjs::hide(id="loading-content", anim=TRUE, animType="fade")    
+    })
+    
     print("Clustering columns")
     M=gVars$KEGG_MAT
     #save(M,file = "demo/M.RData")
