@@ -473,7 +473,7 @@ shinyServer(function(input, output,session) {
   },  height = function(){
     
     if(!is.null(gVars$nPath)){
-      mysize = (gVars$nPath* 20 ) + 10
+      mysize = (gVars$nPath* 20 ) + 10 * max(sapply(gVars$exp_ann,nchar))
       print(paste("MY HEIGHT IS ---->", mysize))
       
       print(paste("MY path IS ---->", gVars$nPath))
@@ -603,9 +603,9 @@ shinyServer(function(input, output,session) {
     }
     
     #check for display size, pop up message if too large
-    if(!is.null(gVars$nPath) && ((gVars$nPath* 20 ) + 10) > 30e3){
+    if(!is.null(gVars$nPath) && ((gVars$nPath* 20 ) + 10 * max(sapply(gVars$exp_ann,nchar))) > 30e3){
       print("exceeding dimensions")
-      shinyjs::info("Warnig: too many functional categories, the map might not be readable. Download the PDF for better resolution image.")
+      shinyjs::info("Warning: too many functional categories, the map might not be readable. Download the PDF for better resolution image.")
     }
     
     print("afterPLOTSPLOTSPLOTSPLOTSPLOTSPLOTSPLOTS")
