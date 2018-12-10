@@ -177,10 +177,10 @@ get_kegg_hierarchy <- function(){
   return(kegg_hierarchy)
 }
 
-enrich = function(x,type,org,pval){
+enrich = function(x, type, org, pval, adjust_method){
   #???mmusculus???
   print("before gprofiler")
-  out = gProfileR::gprofiler(query = x[,1],src_filter=type,organism=org,max_p_value = pval)
+  out = gProfileR::gprofiler(query = x[,1],src_filter=type,organism=org,max_p_value = pval, correction_method = adjust_method)
   
   #out = gProfileR::gprofiler(query = x[,1],src_filter=type,organism=org,max_p_value = pval,domain_size = "known")
   #print(out)
