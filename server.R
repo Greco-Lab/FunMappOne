@@ -313,7 +313,7 @@ shinyServer(function(input, output,session) {
     }
     
     
-    EnrichDatList = lapply(gVars$GList,enrich,type_enrich,org_enrich,as.numeric(input$pvalueTh))
+    EnrichDatList = lapply(gVars$GList,enrich,type_enrich,org_enrich,as.numeric(input$pvalueTh),input$pcorrection)
     #save(EnrichDatList,file = "demo/EnrichDatList.RData")
 
     if(input$EnrichType == "GO"){
