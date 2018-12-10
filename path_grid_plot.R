@@ -114,7 +114,6 @@ collapse_paths <- function (kegg_hierarchy,kegg_mat_cell, collapse_level=1,col_f
   #create a nemed list element containing collapsed matrix and collapsed hierarchy as well
   lev_hierarchy <- unique(as.data.frame(hierarchy_sub[,1:collapse_level]))
   colnames(lev_hierarchy) <- colnames(hierarchy_sub)[1:collapse_level]
-  #Aggiungi colonne farlocche alla matrice lev_mat. vedendo quali sono i replicati del livello a cui si sta lavorando
   
   return(list(lev_mat,lev_hierarchy))
 }
