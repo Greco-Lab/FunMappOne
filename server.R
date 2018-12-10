@@ -235,6 +235,10 @@ shinyServer(function(input, output,session) {
     req(input$organism)
     req(input$idtype)
     #req(input$fileType)
+    gVars$toPlot <- NULL # refresh plot map in the Plot Maps tab
+    gVars$clust_mat <- NULL
+    gVars$KEGG_MAT <- NULL
+
     
     DAT = DATA()    
     if(input$organism == "Mouse"){          
@@ -448,7 +452,6 @@ shinyServer(function(input, output,session) {
     })
     
     updateTabsetPanel(session = session,inputId = "page_id", selected = "PlotMaps")
-    gVars$toPlot <- NULL # refresh plot map in the Plot Maps tab
   })
   
   output$heatmap <- renderPlot({
