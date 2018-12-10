@@ -255,7 +255,7 @@ shinyServer(function(input, output,session) {
       org_enrich = "hsapiens"
     }
     
-    #######elimino duplicati reactome
+    ####### remove reactome duplicates
     reactome_hierarchy=unique(reactome_hierarchy)
     
     # Compute enrichment
