@@ -118,7 +118,7 @@ navbarPage("FunMappOne",id = "page_id",
                           ),
                           column(6,radioButtons("pcorrection","Correction Method",
                                                 choices = c(gSCS = "analytical", fdr = "fdr", bonferroni = "bonferroni"),
-                                                selected = "fdr"),
+                                                selected = "analytical"),
                                    shinyBS::bsTooltip(id = "pcorrection",
                                                       title = "Default is g:SCS. Check g:Profiler web page for more info",
                                                       placement = "top")
