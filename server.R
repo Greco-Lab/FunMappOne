@@ -355,8 +355,8 @@ shinyServer(function(input, output,session) {
         go_hierarchy = go_hierarchy[-idx,]
       }
       go_hierarchy[,1] = Term(GOTERM[as.character(go_hierarchy[,1])])
-      go_hierarchy[,2] = Term(GOTERM[go_hierarchy[,2]])
-      go_hierarchy[,3] = Term(GOTERM[go_hierarchy[,3]])
+      go_hierarchy[,2] = Term(GOTERM[as.character(go_hierarchy[,2])])
+      go_hierarchy[,3] = Term(GOTERM[as.character(go_hierarchy[,3])])
       
       # colnames(hier_names) = c("Level1","Level2","Pathway")
       gVars$hierarchy = go_hierarchy
