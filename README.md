@@ -2,7 +2,9 @@
 
 A user-friendly graphical interface that allows to visualize and summarize the functional annotations of one or multiple molecular biology experiments at once.
 
-Reference paper: Scala, G., Serra, A., Marwah, V. S., Saarimäki, L. A., & Greco, D. (2019). FunMappOne: a tool to hierarchically organize and visually navigate functional gene annotations in multiple experiments. BMC bioinformatics, 20(1), 79.
+Reference paper: 
+
+> Scala, G., Serra, A., Marwah, V. S., Saarimäki, L. A., & Greco, D. (2019). FunMappOne: a tool to hierarchically organize and visually navigate functional gene annotations in multiple experiments. BMC bioinformatics, 20(1), 79.
 
 More information at: https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-019-2639-2
 
