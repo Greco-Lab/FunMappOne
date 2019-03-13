@@ -16,8 +16,8 @@ font-size: 50px;
 text-align: center;
 color: #black;
 }
-#loading-gif { 
-opacity: 0.8; 
+#loading-gif {
+opacity: 0.8;
 display: block;
 margin-left: auto;
 margin-right: auto;
@@ -45,14 +45,14 @@ navbarPage("FunMappOne",id = "page_id",
                                    radioButtons("organism","1) Organisms",
                                                 choices = c(human = "Human", mouse = "Mouse"),selected = "Human"),
                                    shinyBS::bsTooltip(id = "organism",title = "Note: select organism and gene ID before uploading the file",placement = "bottom")
-                                   
+
                             ) ,
                             column(4,radioButtons("idtype","2) GeneID",
                                                   choices = c(symbols = "SYMBOL", ensemble = "ENSEMBL",entrez = "ENTREZID"),
                                                   selected = "SYMBOL"),
                                    shinyBS::bsTooltip(id = "idtype",title = "Note: select organism and gene ID before uploading the file",placement = "bottom")
-                                   
-                                   
+
+
                             ),
                            column(4,
                                    fileInput("file1", "3) Choose Excel File",
@@ -60,16 +60,16 @@ navbarPage("FunMappOne",id = "page_id",
                                              accept = c("text/csv/xlsx",
                                                         "text/comma-separated-values,text/plain/excel",
                                                         ".xlsx")))
-                           
+
                           )
                             # column(4,
                                    # radioButtons("continuous","Plot modification",
                                    #              choices = c(value = "continuous",
                                    #                          sign = "discrete"),
                                    #              selected = "continuous")
-                            # ) 
-                            
-                        
+                            # )
+
+
 
                         # fluidRow(
                         #   column(6,
@@ -101,20 +101,20 @@ navbarPage("FunMappOne",id = "page_id",
                                          selected = "FC")
                           ),
                           column(6,selectInput(inputId = "pvalueTh", label = "P-value threshold:",choices = list(0.001,0.005,0.01,0.02,0.03,0.04,0.05,0.06,0.07,0.08,0.09),selected = 0.05)
-                    
+
 
                         ))
-                       
+
                       ),
                       tags$h5("3. Display parameters"),
                       wellPanel(
                         # Horizontal line ----
                         fluidRow(
-                          
+
                           column(6,radioButtons("aggregation","Aggregation Function",
                                                 choices = c(min = "min", max = "max",mean = "mean",
                                                             median = "median"),
-                                                selected = "mean")  
+                                                selected = "mean")
                           ),
                           column(6,radioButtons("pcorrection","Correction Method",
                                                 choices = c(gSCS = "analytical", fdr = "fdr", bonferroni = "bonferroni"),
@@ -124,24 +124,24 @@ navbarPage("FunMappOne",id = "page_id",
                                                       placement = "top")
 
                           )),
-                          
+
                         fluidRow(column(6,radioButtons("continuous","Plot modification",
                                                 choices = c(value = "continuous",
                                                             sign = "discrete"),
                                                 selected = "continuous")),
                           column(6,actionButton("computePathways","Generate Map")))
-                          
-                          
+
+
                         )
-                        
+
                       ),
-                        
+
                       mainPanel(
                         wellPanel(
                           #fluidRow(tableOutput("contents")),
                           fluidRow(DT::dataTableOutput("contents")),
                           tags$hr(),
-                          
+
                           fluidRow(textOutput("updatedTable")),
                           fluidRow(DT::dataTableOutput("colSums"))
                           ),
@@ -149,7 +149,7 @@ navbarPage("FunMappOne",id = "page_id",
                           fluidRow(textOutput("updatedPat")),
                           fluidRow(DT::dataTableOutput("colSumsPat"))
                         )
-                      )      
+                      )
                     )# end sidebar layout
            ),
            tabPanel("Plot Maps",value="PlotMaps",
@@ -157,7 +157,7 @@ navbarPage("FunMappOne",id = "page_id",
                 sidebarPanel(
                   wellPanel(
                    tags$h5("1. Data Selection"),
-                    fluidRow(                      
+                    fluidRow(
                       selectInput(inputId = "level", label = "Browse hierarchy: choose a level",choices = list(1,2,3))
                     ),
                     fluidRow(
@@ -167,12 +167,12 @@ navbarPage("FunMappOne",id = "page_id",
                       shinyBS::bsTooltip(id = "chose_lev2",title = "Note: remove ALL from the list for specific selection.",placement = "top"),
                       column(3,uiOutput("chose_lev3")),
                       shinyBS::bsTooltip(id = "chose_lev3",title = "Note: remove ALL from the list for specific selection.",placement = "top")
-                      
+
                     ),
                     fluidRow(
                       uiOutput("selectColumn"),
                       shinyBS::bsTooltip(id = "selectColumn",title = "Note: remove ALL from the list for specific selection.",placement = "top")
-                      
+
                     )
                   ),
                   wellPanel(
@@ -183,7 +183,7 @@ navbarPage("FunMappOne",id = "page_id",
                       column(4,checkboxInput("aspectRatio", "Keep aspect ratio", value = TRUE)),
                       column(4,actionButton("do", "Plot Map")),
                       shinyBS::bsTooltip(id = "do",title ="NOTE: press the Plot Mat button every time you update the map!",placement = "bottom")
-                      
+
                     )
                   ),
                   wellPanel(
@@ -207,7 +207,7 @@ navbarPage("FunMappOne",id = "page_id",
                       column(6,actionButton("resetCluster","Reset Cluster"))
                     )
                   )
-                  
+
                 ),
                 mainPanel(
                                     tags$h5("Use scrollbars to navigate and see the whole map"),
@@ -215,6 +215,20 @@ navbarPage("FunMappOne",id = "page_id",
                   tabsetPanel(
 
                   tabPanel("Heatmap",fluidRow(column(12,align="left",shinycssloaders::withSpinner(plotOutput(outputId="heatmap"), type=6)))),
+                  tabPanel("Heatmap Genes",
+                    fluidRow(column(4,
+                        selectInput(inputId="levelGene", label="Choose a hierarchy level", choices=list(1,2,3))
+                      ),column(4,
+                        uiOutput("choosePath")
+                      ),column(4,
+                        selectInput(inputId="selScoreType", label="Show Values", choices=list("logFC"="lfc", "P-Value"="pval", "Combined"="comb"), selected="lfc")
+                    )),fluidRow(column(4,
+                        #shinyBS::bsButton("doGeneHeatMap", label="Plot", style="danger", icon=icon("exclamation-circle"))
+                        actionButton("doGeneHeatMap", "Plot")
+                    )),fluidRow(column(12,align="center",
+                      shinycssloaders::withSpinner(plotOutput(outputId="heatmapGenes"), type=6)
+                    ))
+                  ),
                     tabPanel("Clustering",plotOutput(outputId="hclust_plot", width = "100%"))
                   )
                   #fluidRow(plotOutput(outputId="heatmap",height = 900))
@@ -223,13 +237,13 @@ navbarPage("FunMappOne",id = "page_id",
            )
 )
 )
-# 
+#
 # #Define UI for application that plots random distributions
 # shinyUI(fluidPage(
-# 
+#
 #   # Application title
 #   titlePanel("Kegg Hierarchy Visualization"),
-# 
+#
 #   # Sidebar with a slider input for number of observations
 #   sidebarLayout(
 #     sidebarPanel(
@@ -238,13 +252,13 @@ navbarPage("FunMappOne",id = "page_id",
 #                 accept = c("text/csv",
 #                            "text/comma-separated-values,text/plain",
 #                            ".csv")),
-#       
+#
 #       # Horizontal line ----
 #       tags$hr(),
 #       fluidRow(column(4,
 #                       # Input: Checkbox if file has header ----
 #                       checkboxInput("header", "Header", TRUE)),
-#                 column(4,      
+#                 column(4,
 #                       # Input: Select separator ----
 #                       radioButtons("sep", "Separator",
 #                                    choices = c(Comma = ",",
@@ -259,25 +273,25 @@ navbarPage("FunMappOne",id = "page_id",
 #                                                "Single Quote" = "'"),
 #                                    selected = '"'))
 #       ),
-#      
-#       
+#
+#
 #       # Horizontal line ----
 #       tags$hr(),
-#       
+#
 #       # Input: Select number of rows to display ----
 #       radioButtons("disp", "Display",
 #                    choices = c(Head = "head",
 #                                All = "all"),
 #                    selected = "head"),
-#       
+#
 #       selectInput(inputId = "level", label = "Choose a level:",choices = list(1,2,3)),
 #       uiOutput("chose_lev1"),
 #       uiOutput("chose_lev2"),
 #       uiOutput("chose_lev3"),
 #       actionButton("do", "Click Me")
-#       
+#
 #     ),
-# 
+#
 #     # Show a plot of the generated distribution
 #     mainPanel(
 #       fluidRow(wellPanel(
@@ -287,6 +301,6 @@ navbarPage("FunMappOne",id = "page_id",
 #       fluidRow(wellPanel(
 #         tableOutput("contents")
 #       )))
-#     
+#
 #   )
 # ))

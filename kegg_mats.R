@@ -3,13 +3,13 @@ library(readxl)
 
 read_excel_allsheets <- function(filename, tibble = FALSE) {
   sheets <- readxl::excel_sheets(filename)
-  x <- lapply(sheets, function(X){ 
-    
+  x <- lapply(sheets, function(X){
+
     y = readxl::read_excel(filename, sheet = X)
     y[,1] = as.character(as.vector(y[[1]]))
     y
     })
-  
+
   if(!tibble) x <- lapply(x, as.data.frame)
   names(x) <- sheets
   return(x)
@@ -56,9 +56,9 @@ filterGO = function(EnrichDatList,go_type="BP"){
     #   EnrichDatList[[i]] = NULL
     # }
     goTerm = union(goTerm,df[,"annID"])
-   
+
   }
-  
+
   XX = select(x = GO.db,columns = c("GOID","ONTOLOGY"),keys = goTerm)
   toRem = which(is.na(XX[,2]))
   if(length(toRem)>0){
@@ -71,12 +71,12 @@ filterGO = function(EnrichDatList,go_type="BP"){
       }
     }
   }
-  
+
   if(length(toRem)>0){
     goTerm = XX[-toRem,1]
-    
+
   }
-  
+
   return(list(EnrichDatList=EnrichDatList,goTerm=goTerm))
 }
 
@@ -85,7 +85,7 @@ filterGO = function(EnrichDatList,go_type="BP"){
 # In every i-th position of the list there are the gene of sample i-th
 create_list_of_genes_from_data = function(DAT, isHeader = TRUE, file_type){
   ##print(dim(DAT))
-  
+
   if(isHeader){
     #print("The file has colnames")
     name_contrasts = colnames(DAT)
@@ -93,7 +93,7 @@ create_list_of_genes_from_data = function(DAT, isHeader = TRUE, file_type){
     #print("The file has no colnames")
     name_contrasts = paste("V",1:ncol(DAT),sep="")
   }
-  
+
   if(file_type=="GenesOnly"){
     #list with ensemble gene id for each contrast
     LIST = list()
@@ -105,7 +105,7 @@ create_list_of_genes_from_data = function(DAT, isHeader = TRUE, file_type){
   }else{
     LIST1 = list()
     LIST2 = list()
-    
+
     for(i in 1:ncol(DAT)){
       if(i %% 2 == 1){
         genes = DAT[,i]
@@ -126,7 +126,7 @@ kegg_mat_p <- function(EnrichDatList,hierarchy) {
   cat("Inside kegg_mat_p GO")
   names_un = unique(hierarchy$ID)
   kegg_mat_cell <- matrix(data = NA, nrow = length(conmp_names),ncol = length(names_un), dimnames = list(conmp_names,names_un))
-  
+
   for (i in 1:length(EnrichDatList)){
     kegg = EnrichDatList[[i]]
     if(!gtools::invalid(kegg)){
@@ -139,8 +139,8 @@ kegg_mat_p <- function(EnrichDatList,hierarchy) {
           }
         }
     }
-  }  
-  
+  }
+
 
   not_empty <- colSums(!is.na(kegg_mat_cell)) >0
   print(not_empty)
@@ -160,7 +160,7 @@ kegg_mat_p <- function(EnrichDatList,hierarchy) {
       kegg_mat_cell <- kegg_mat_cell[,colSums(!is.na(kegg_mat_cell)) >0]
   }
 
-  
+
   #kegg_mat_cell <- kegg_mat_cell[,colSums(!is.na(kegg_mat_cell)) < nrow(kegg_mat_cell)]
   return(kegg_mat_cell)
 }
@@ -170,9 +170,9 @@ kegg_mat_fc <- function(EnrichDatList,hierarchy,GList, summ_fun=median) {
   conmp_names = names(EnrichDatList)
   names_un = unique(hierarchy$ID)
   kegg_mat_cell <- matrix(data = NA, nrow = length(conmp_names),ncol = length(names_un), dimnames = list(conmp_names,names_un))
-  
+
   ##print(head(kegg_mat_cell))
-  
+
   for (i in 1:length(EnrichDatList)){
     kegg = EnrichDatList[[i]]
     if(!gtools::invalid(kegg)){
@@ -188,8 +188,8 @@ kegg_mat_fc <- function(EnrichDatList,hierarchy,GList, summ_fun=median) {
           }
         }
     }
-  }  
-  
+  }
+
   not_empty <- colSums(!is.na(kegg_mat_cell)) >0
   print(not_empty)
   if (sum(not_empty) == 1){
@@ -211,9 +211,78 @@ kegg_mat_fc <- function(EnrichDatList,hierarchy,GList, summ_fun=median) {
   return(kegg_mat_cell)
 }
 
+#kegg_mat_genes <- function(EnrichDatList, hierarchy, GList, summ_fun=median) {
+kegg_mat_genes <- function(EnrichDatList, hierarchy) {
+  print("Inside kegg_mat_genes")
+  conmp_names = names(EnrichDatList)
+  print("length(conmp_names)")
+  print(length(conmp_names))
+  print("conmp_names")
+  print(conmp_names)
+  names_un = unique(hierarchy$ID)
+  print("length(names_un)")
+  print(length(names_un))
+  print("names_un")
+  print(names_un)
+  kegg_mat_cell <- matrix(data=list(), nrow=length(conmp_names), ncol=length(names_un), dimnames=list(conmp_names,names_un))
+  #kegg_mat_cell <- as.list(rep(NA, length(conmp_names)*length(names_un)))
+  #dim(kegg_mat_cell) <- c(length(conmp_names), length(names_un))
+  #colnames(kegg_mat_cell) <- names_un
+  #rownames(kegg_mat_cell) <- conmp_names
+  print("dim(kegg_mat_cell)")
+  print(dim(kegg_mat_cell))
+
+  ##print(head(kegg_mat_cell))
+  for (i in 1:length(EnrichDatList)){
+    kegg = EnrichDatList[[i]]
+    if(!gtools::invalid(kegg)){
+      if (nrow(kegg)>0)
+        for(kg in 1:nrow(kegg)){
+          if(kegg$annID[kg] %in% colnames(kegg_mat_cell)){
+            genes_in_path <- unlist(strsplit(as.character(kegg$gID[kg]),","))
+            #print("str(genes_in_path)")
+            #print(str(genes_in_path))
+            kegg_mat_cell[[conmp_names[[i]],kegg$annID[kg]]] <- genes_in_path
+          }else{
+            print(paste(kegg$annID[kg],"not found in the provided kegg hierarchy"))
+          }
+        }
+    }
+  }
+
+  #not_empty <- colSums(!is.na(kegg_mat_cell)) >0
+  not_empty <- colSums(apply(kegg_mat_cell, c(1,2), function(x){!is.null(unlist(x))})) >0
+  print(not_empty)
+  # if (sum(not_empty) == 1){
+  #   print("before")
+  #   print(kegg_mat_cell)
+  #
+  #   col_name_un <- colnames(kegg_mat_cell)[not_empty]
+  #   row_nams <- rownames(kegg_mat_cell)
+  #   #kegg_mat_cell <- kegg_mat_cell[,colSums(!is.na(kegg_mat_cell)) >0]
+  #   kegg_mat_cell <- kegg_mat_cell[,not_empty]
+  #   kegg_mat_cell <- matrix(kegg_mat_cell, ncol=1)
+  #   colnames(kegg_mat_cell) <- col_name_un
+  #   rownames(kegg_mat_cell) <- row_nams
+  #   print("after")
+  #   print(class(kegg_mat_cell))
+  # } else {
+  #     #kegg_mat_cell <- kegg_mat_cell[,colSums(!is.na(kegg_mat_cell)) >0]
+  #     kegg_mat_cell <- kegg_mat_cell[,not_empty]
+  # }
+
+  ##Commented previous if else case added drop=FALSE to preserve matrix structure if only one column remains
+  kegg_mat_cell <- kegg_mat_cell[,not_empty, drop=FALSE]
+
+  print("dim(kegg_mat_cell)")
+  print(dim(kegg_mat_cell))
+  #kegg_mat_cell <- kegg_mat_cell[,colSums(kegg_mat_cell,na.rm = T)>0]
+  return(kegg_mat_cell)
+}
+
 #plots all 3 collapsed leayers of a kegg matrix and the sub matrices obtained by splitting at level 1
 plot_kegg_mat <- function(kegg_hierarchy, kegg_mat_cell, group_col,discrete=T, pre_title="",square_colors=c(),color_leg=c(),path_text_size=10,treat_text_size=10) {
-  
+
   #collapse at level 1 using the median to summarize vaulues
   kegg_nano_1 <- collapse_paths(kegg_hierarchy = kegg_hierarchy,kegg_mat_cell = kegg_mat_cell, collapse_level = 1)
   #extract collapsed matrix and collapsed hierarachy
@@ -221,13 +290,13 @@ plot_kegg_mat <- function(kegg_hierarchy, kegg_mat_cell, group_col,discrete=T, p
   hier <- kegg_nano_1[[2]]
   #plot the collapsed matrix
   plot_grid(path_mat = mat,path_hier = hier,experiment_ann = group_col,discrete =  discrete,level_col = 1,title = paste(pre_title,"level1"),square_colors,color_leg,path_text_size = path_text_size,treat_text_size = treat_text_size)
-  
+
   #collapse at level 1 using the median to summarize vaulues
   kegg_nano_2 <- collapse_paths(kegg_hierarchy = kegg_hierarchy,kegg_mat_cell = kegg_mat_cell,collapse_level = 2)
   mat <- kegg_nano_2[[1]]
   hier <- kegg_nano_2[[2]]
   plot_grid(path_mat = mat,path_hier = hier,experiment_ann = group_col,discrete =  discrete,level_col = 1,title = paste(pre_title,"level2"),square_colors,color_leg,path_text_size = path_text_size,treat_text_size = treat_text_size)
-  
+
   #collapse at level 3 using the median to summarize vaulues
   #this call is on the last levele hence no summarizatrion is done
   #we exploit the side effect of reordering and filtering of the hierarchy
@@ -235,8 +304,8 @@ plot_kegg_mat <- function(kegg_hierarchy, kegg_mat_cell, group_col,discrete=T, p
   mat <- kegg_nano_3[[1]]
   hier <- kegg_nano_3[[2]]
   plot_grid(path_mat = mat,path_hier = hier,experiment_ann = group_col, discrete =  discrete,level_col = 1, title = paste(pre_title,"level3"),square_colors,color_leg,path_text_size = path_text_size,treat_text_size = treat_text_size)
-  
-  #split the matrix with levels defined by level 1 
+
+  #split the matrix with levels defined by level 1
   path_by_lev_list <- paths_bylev(kegg_hierarchy = kegg_hierarchy, kegg_mat_cell = kegg_mat_cell, split_level = 1)
   # plot sub matrices one at time grouping and coloring at level 2
   for (i in 1:length(path_by_lev_list)){
@@ -252,12 +321,12 @@ plot_kegg_mat <- function(kegg_hierarchy, kegg_mat_cell, group_col,discrete=T, p
 # kegg_mat_p <- function(EnrichDatList,kegg_hierarchy,mm_reactome_hierarchy,mouse_map,hm_reactome_hierarchy,human_map, go_hierarchy, org = "mm",annType="GO",go_type = "BP") {
 #   cat("Inside kegg_mat_p")
 #   conmp_names = names(EnrichDatList)
-#   
+#
 #   if(annType=="GO"){
 #     cat("Inside kegg_mat_p GO")
 #     names_un = unique(go_hierarchy[,3])
 #     kegg_mat_cell <- matrix(data = NA, nrow = length(conmp_names),ncol = length(names_un), dimnames = list(conmp_names,names_un))
-#     
+#
 #     for (i in 1:length(EnrichDatList)){
 #       kegg = EnrichDatList[[i]]
 #       if(!gtools::invalid(kegg)){
@@ -271,20 +340,20 @@ plot_kegg_mat <- function(kegg_hierarchy, kegg_mat_cell, group_col,discrete=T, p
 #           }
 #       }
 #     }
-#       
+#
 #   }
 #   if(annType == "KEGG"){
 #     cat("Inside kegg_mat_p KEGG")
-#     
+#
 #     names_un = unique(kegg_hierarchy$Pathway)
 #     kegg_mat_cell <- matrix(data = NA, nrow = length(conmp_names),ncol = length(names_un), dimnames = list(conmp_names,names_un))
-#     
+#
 #     for (i in 1:length(EnrichDatList)){
 #       kegg = EnrichDatList[[i]]
 #       if(!gtools::invalid(kegg)){
-#         
+#
 #         kegg$Description = kegg_hierarchy$Pathway[kegg_hierarchy$ID %in% kegg$annID]
-#         
+#
 #         if (nrow(kegg)>0)
 #           for(kg in 1:nrow(kegg)){
 #             if(kegg$Description[kg] %in% colnames(kegg_mat_cell) ){
@@ -298,27 +367,27 @@ plot_kegg_mat <- function(kegg_hierarchy, kegg_mat_cell, group_col,discrete=T, p
 #   }
 #   if(annType == "REACTOME"){
 #     cat("Inside kegg_mat_p REACTOME")
-#     
+#
 #     if(org == "mm"){
 #       reactome_hierarchy = mm_reactome_hierarchy
 #       names_un = mouse_map[unlist(reactome_hierarchy$Pathway),2]
-#       
+#
 #     }else{
 #       reactome_hierarchy = hm_reactome_hierarchy
 #       names_un = human_map[unlist(reactome_hierarchy$Pathway),2]
-#       
+#
 #     }
-#     
+#
 #     #names_un = unlist(unique(reactome_hierarchy$Pathway))
 #     kegg_mat_cell <- matrix(data = NA, nrow = length(conmp_names),ncol = length(names_un), dimnames = list(conmp_names,names_un))
-#     
+#
 #     for (i in 1:length(EnrichDatList)){
 #       kegg = EnrichDatList[[i]]
 #       #print(i)
 #       if(!gtools::invalid(kegg)){
-#         
+#
 #         kegg$Description = mouse_map[kegg$annID,2]#reactome_hierarchy$Pathway[kegg_hierarchy$ID %in% kegg$annID]
-#         
+#
 #         if (nrow(kegg)>0)
 #           for(kg in 1:nrow(kegg)){
 #             if(kegg$Description[kg] %in% colnames(kegg_mat_cell) ){
@@ -329,9 +398,9 @@ plot_kegg_mat <- function(kegg_hierarchy, kegg_mat_cell, group_col,discrete=T, p
 #           }
 #       }
 #     }
-#   
+#
 #   }
-#   
+#
 #   kegg_mat_cell <- kegg_mat_cell[,colSums(kegg_mat_cell,na.rm = T)>0]
 #   return(kegg_mat_cell)
 # }
@@ -341,22 +410,22 @@ plot_kegg_mat <- function(kegg_hierarchy, kegg_mat_cell, group_col,discrete=T, p
 # kegg_mat_p <- function(conmp_names, gene_sig,kegg_hierarchy, organism = 'hsa', pvalueCutoff = 0.05,pAdjustMethod = "fdr",keyType="SYMBOL", annType="GO") {
 #   names_un = unique(kegg_hierarchy$Pathway)
 #   kegg_mat_cell <- matrix(data = NA, nrow = length(conmp_names),ncol = length(names_un), dimnames = list(conmp_names,names_un))
-# 
+#
 #   for (i in 1:length(gene_sig)){
 #     entrez_sym <- NA
 #     kegg <- NA
-#     
+#
 #     entrez_sym <- as.character(gene_sig[[i]])
 #     entrez_sym[entrez_sym %in% ""] = NA
 #     entrez_sym <- entrez_sym[complete.cases(entrez_sym)]
-#     
+#
 #     if(!is.na(entrez_sym) && length(entrez_sym)>0){
 #       #try(kegg2 <- enrichKEGG(gene = na.omit(entrez_sym), organism = organism, pvalueCutoff = pvalueCutoff,pAdjustMethod = pAdjustMethod))
 #       try(kegg <- annotation_enrichment(genelist =na.omit(entrez_sym) , keyType=keyType, annType=annType, organism=organism, adjMethod=pAdjustMethod,pvalueCutoff = pvalueCutoff))
 #       if(!gtools::invalid(kegg)){
 #         #kegg <- kegg@result
 #         kegg$Description = kegg_hierarchy$Pathway[kegg_hierarchy$ID %in% kegg$annID]
-#         
+#
 #         if (nrow(kegg)>0)
 #           for(kg in 1:nrow(kegg)){
 #             if(kegg$Description[kg] %in% colnames(kegg_mat_cell) ){
@@ -368,28 +437,28 @@ plot_kegg_mat <- function(kegg_hierarchy, kegg_mat_cell, group_col,discrete=T, p
 #       }
 #     }
 #   }
-#   
+#
 #   kegg_mat_cell <- kegg_mat_cell[,colSums(kegg_mat_cell,na.rm = T)>0]
 #   return(kegg_mat_cell)
 # }
-# 
+#
 # kegg_mat_fc <- function(conmp_names, gene_sig, gene_sig_fc, kegg_hierarchy, discr=T, organism = 'hsa', pvalueCutoff = 0.05,pAdjustMethod = "fdr", summ_fun=median,keyType="SYMBOL", annType="GO") {
 #   names_un = unique(kegg_hierarchy$Pathway)
 #   kegg_mat_FC <- matrix(data = NA, nrow = length(conmp_names),ncol = length(names_un), dimnames = list(conmp_names,names_un))
-#   
+#
 #   for (i in 1:length(gene_sig)){
 #     kegg <- NA
 #     genes_in_path <- NA
 #     summFC <- NA
-# 
+#
 #     if(!all(is.na(gene_sig[[i]])) && length(gene_sig[[i]])>0){
 #       #try(kegg <- enrichKEGG(gene = na.omit(gene_sig[[i]]), organism = organism, pvalueCutoff = pvalueCutoff,pAdjustMethod = pAdjustMethod))
 #       try(kegg <- annotation_enrichment(genelist =na.omit(entrez_sym) , keyType=keyType, annType=annType, organism=organism, adjMethod=pAdjustMethod,pvalueCutoff = pvalueCutoff))
-#       
+#
 #       if(!gtools::invalid(kegg)){
 #         #kegg <- kegg@result
 #         kegg$Description = kegg_hierarchy$Pathway[kegg_hierarchy$ID %in% kegg$annID]
-#         
+#
 #         if (nrow(kegg)>0)
 #           for(kg in 1:nrow(kegg)){
 #             if(kegg$Description[kg] %in% colnames(kegg_mat_FC) ){
@@ -403,9 +472,9 @@ plot_kegg_mat <- function(kegg_hierarchy, kegg_mat_cell, group_col,discrete=T, p
 #       }
 #     }
 #   }
-#   
+#
 #   kegg_mat_FC <- kegg_mat_FC[,colSums(!is.na(kegg_mat_FC))>0]
-#   
+#
 #   if (discr){
 #     kegg_mat_FC[kegg_mat_FC>0] <- 1
 #     kegg_mat_FC[kegg_mat_FC<0] <- -1
