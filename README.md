@@ -2,7 +2,7 @@
 
 A user-friendly graphical interface that allows to visualize and summarize the functional annotations of one or multiple molecular biology experiments at once.
 
-Reference paper: 
+Reference paper:
 
 > Scala, G., Serra, A., Marwah, V. S., Saarimäki, L. A., & Greco, D. (2019). FunMappOne: a tool to hierarchically organize and visually navigate functional gene annotations in multiple experiments. BMC bioinformatics, 20(1), 79.
 
@@ -21,7 +21,7 @@ The FunMappOne docker image is available at https://hub.docker.com/r/grecolab/fu
 
 ```BASH
 libv8-3.14-dev
-libxml2-dev 
+libxml2-dev
 libssl-dev
 ```
 
@@ -42,9 +42,10 @@ if(length(bioc_pkgs.inst)>0){
 }
 
 #Install CRAN dependencies
-cran_pkgs <- c("ggplotify", "RColorBrewer", "reshape", "ggplot2", "shiny", "shinyjs", "tibble", 
-               "gProfileR", "DT", "randomcoloR", "readxl", "cellranger", "devtools", "scales", 
-               "gtools", "shinycssloaders", "shinyBS")
+cran_pkgs <- c("ggplotify", "RColorBrewer", "reshape", "ggplot2", "shiny", "shinyjs", "tibble",
+               "gProfileR", "DT", "randomcoloR", "readxl", "cellranger", "devtools", "scales",
+               "gtools", "shinycssloaders", "shinyBS", "tidyverse",
+                "gridExtra", "gtable", "grid")
 cran_pkgs.inst <- cran_pkgs[!(cran_pkgs %in% rownames(installed.packages()))]
 if(length(cran_pkgs.inst)>0){
   print(paste0("Missing ", length(cran_pkgs.inst), " CRAN Packages:"))
@@ -65,7 +66,7 @@ library(shinyjs)
 runGitHub("FunMappOne", "Greco-Lab")
 ```
 
-### or from a local copy 
+### or from a local copy
 ```R
   # Clone the git repository
   git clone https://github.com/Greco-Lab/FunMappOne FunMappOne
