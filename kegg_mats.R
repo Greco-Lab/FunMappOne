@@ -59,7 +59,7 @@ filterGO = function(EnrichDatList,go_type="BP"){
 
   }
 
-  XX = select(x = GO.db,columns = c("GOID","ONTOLOGY"),keys = goTerm)
+  XX = AnnotationDbi::select(x = GO.db,columns = c("GOID","ONTOLOGY"),keys = goTerm)
   toRem = which(is.na(XX[,2]))
   if(length(toRem)>0){
     toRemGo = XX[toRem,1]
