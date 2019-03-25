@@ -177,17 +177,25 @@ get_kegg_hierarchy <- function(){
   return(kegg_hierarchy)
 }
 
-enrich = function(x, type, org, pval, adjust_method){
-  #???mmusculus???
+enrich = function(x, type, org, pval, adjust_method,sig = TRUE, mis = 0, only_annotated = TRUE){
+  if(only_annotated){
+    domain_size = "annotated"
+  }else{
+    domain_size = "known"
+  }
+  
   print("before gprofiler")
-  out = gProfileR::gprofiler(query = x[,1],src_filter=type,organism=org,max_p_value = pval, correction_method = adjust_method)
+  out = gProfileR::gprofiler(query = as.character(x[,1]),src_filter=type,organism=org,domain_size = domain_size,
+                             max_p_value = pval, correction_method = adjust_method,significant = sig,min_isect_size = mis)
   
   #out = gProfileR::gprofiler(query = x[,1],src_filter=type,organism=org,max_p_value = pval,domain_size = "known")
-  #print(out)
+  print(out)
   
   ##print("after gprofiler")
   out=out[,c("term.id","intersection","p.value","p.value","term.name")]
   colnames(out) = c( "annID","gID","pValue","pValueAdj","Description")
+  
+  print(out)
   # if(nrow(out)>0){
   #   out$annID= gsub("KEGG:","",out$annID)
   #   if(org=="hsapiens")
@@ -204,17 +212,17 @@ enrich = function(x, type, org, pval, adjust_method){
 
 convert_genes = function(organism = "hsapiens", GList, annType = "SYMBOL"){
   
-  save(GList,organism, annType,file = "inside_convert_genes.RData")
-  
-  orgLibs <- list("Human"=org.Hs.eg.db, "Mouse"=org.Mm.eg.db)
+  #save(GList,organism, annType,file = "inside_convert_genes.RData")
+  library(org.Rn.eg.db)
+  orgLibs <- list("Human"=org.Hs.eg.db, "Mouse"=org.Mm.eg.db, "Rat" = org.Rn.eg.db)
   orgDB <- orgLibs[[organism]]
   
   if(annType == "SYMBOL"){
     tmp = GList[[1]]
-    tmp <- AnnotationDbi::select(orgDB, keys=tmp[,1], columns="SYMBOL", keytype=annType)
+    tmp <- AnnotationDbi::select(orgDB, keys=as.character(tmp[,1]), columns="SYMBOL", keytype=annType)
     return(GList)
   }
-
+  
   for(i in 1:length(GList)){
     M=GList[[i]]
     print("accessing M[,1]")
@@ -270,12 +278,11 @@ convert_genes = function(organism = "hsapiens", GList, annType = "SYMBOL"){
 }
 
 
-  
-  # all_GO_BP = lapply(all_data,enrich,"GO:BP")
-  # all_GO_CC = lapply(all_data,enrich,"GO:CC")
-  # all_GO_MF = lapply(all_data,enrich,"GO:MF")
-  # 
-  # all_KEGG= lapply(all_data,enrich,"KEGG")
-  # all_REACT = lapply(all_data,enrich,"REAC")
-  
+# all_GO_BP = lapply(all_data,enrich,"GO:BP")
+# all_GO_CC = lapply(all_data,enrich,"GO:CC")
+# all_GO_MF = lapply(all_data,enrich,"GO:MF")
+# 
+# all_KEGG= lapply(all_data,enrich,"KEGG")
+# all_REACT = lapply(all_data,enrich,"REAC")
+
 

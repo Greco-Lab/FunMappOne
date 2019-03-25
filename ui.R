@@ -34,209 +34,217 @@ fluidPage(
              p(id="loadingText", "WORKING"),
              p("...")
   )),
-navbarPage("FunMappOne",id = "page_id",
-                tabPanel("Input",
-                    sidebarLayout(
-                      sidebarPanel(
-                        tags$h5("1. Input gene lists"),
-                        wellPanel(
-                          fluidRow(
-                            column(4,
-                                   radioButtons("organism","1) Organisms",
-                                                choices = c(human = "Human", mouse = "Mouse"),selected = "Human"),
-                                   shinyBS::bsTooltip(id = "organism",title = "Note: select organism and gene ID before uploading the file",placement = "bottom")
-
-                            ) ,
-                            column(4,radioButtons("idtype","2) GeneID",
-                                                  choices = c(symbols = "SYMBOL", ensemble = "ENSEMBL",entrez = "ENTREZID"),
-                                                  selected = "SYMBOL"),
-                                   shinyBS::bsTooltip(id = "idtype",title = "Note: select organism and gene ID before uploading the file",placement = "bottom")
-
-
-                            ),
-                           column(4,
-                                   fileInput("file1", "3) Choose Excel File",
-                                             multiple = FALSE,
-                                             accept = c("text/csv/xlsx",
-                                                        "text/comma-separated-values,text/plain/excel",
-                                                        ".xlsx")))
-
-                          )
+  navbarPage("FunMappOne",id = "page_id",
+             tabPanel("Input",
+                      sidebarLayout(
+                        sidebarPanel(
+                          tags$h5("1. Input gene lists"),
+                          wellPanel(
+                            fluidRow(
+                              column(4,
+                                     radioButtons("organism","1) Organisms",
+                                                  choices = c(human = "Human", mouse = "Mouse"),selected = "Human"),
+                                     shinyBS::bsTooltip(id = "organism",title = "Note: select organism and gene ID before uploading the file",placement = "bottom")
+                                     
+                              ) ,
+                              column(4,radioButtons("idtype","2) GeneID",
+                                                    choices = c(symbols = "SYMBOL", ensemble = "ENSEMBL",entrez = "ENTREZID"),
+                                                    selected = "SYMBOL"),
+                                     shinyBS::bsTooltip(id = "idtype",title = "Note: select organism and gene ID before uploading the file",placement = "bottom")
+                                     
+                                     
+                              ),
+                              column(4,
+                                     fileInput("file1", "3) Choose Excel File",
+                                               multiple = FALSE,
+                                               accept = c("text/csv/xlsx",
+                                                          "text/comma-separated-values,text/plain/excel",
+                                                          ".xlsx")))
+                              
+                            )
                             # column(4,
-                                   # radioButtons("continuous","Plot modification",
-                                   #              choices = c(value = "continuous",
-                                   #                          sign = "discrete"),
-                                   #              selected = "continuous")
+                            # radioButtons("continuous","Plot modification",
+                            #              choices = c(value = "continuous",
+                            #                          sign = "discrete"),
+                            #              selected = "continuous")
                             # )
-
-
-
-                        # fluidRow(
-                        #   column(6,
-                        #          radioButtons("fileType","FileType",
-                        #                       choices = c('Genes' = "GenesOnly", 'Genes and Modifications' = "genesFC"),
-                        #                       selected = "GenesOnly") ),
-                        #   column(6,radioButtons("disp", "Display",choices = c(Head = "head", All = "all"),selected = "head"))
-                        #   ),
-                        #   fileInput("file1", "Choose Excel File",
-                        #             multiple = FALSE,
-                        #             accept = c("text/csv/xlsx",
-                        #                        "text/comma-separated-values,text/plain/excel",
-                        #                        ".xlsx"))
-                           ),
-                        tags$h5("2. Functional annotation parameters"),
-                        wellPanel(
-                        fluidRow(
-                          column(6,radioButtons("EnrichType","Select Functional Annotation",
-                                                choices = c(KEGG = "KEGG", REACTOME="REACTOME",GO = "GO"),
-                                                selected = "KEGG")
+                            
+                            
+                            
+                            # fluidRow(
+                            #   column(6,
+                            #          radioButtons("fileType","FileType",
+                            #                       choices = c('Genes' = "GenesOnly", 'Genes and Modifications' = "genesFC"),
+                            #                       selected = "GenesOnly") ),
+                            #   column(6,radioButtons("disp", "Display",choices = c(Head = "head", All = "all"),selected = "head"))
+                            #   ),
+                            #   fileInput("file1", "Choose Excel File",
+                            #             multiple = FALSE,
+                            #             accept = c("text/csv/xlsx",
+                            #                        "text/comma-separated-values,text/plain/excel",
+                            #                        ".xlsx"))
                           ),
-                          column(6,radioButtons("GOType","Select GO",
-                                                choices = c(BP = "BP", CC="CC",MF = "MF"),
-                                                selected = "BP")
-                          )),
-                        fluidRow(column(6,
-                            radioButtons("MapValueType","Choose Values Type",
-                                         choices = c(Pvalue = "PVAL", GenesModifications="FC",GenesModifications_PValue  = "FCPV"),
-                                         selected = "FC")
+                          tags$h5("2. Functional annotation parameters"),
+                          wellPanel(
+                            fluidRow(
+                              column(6,radioButtons("EnrichType","Select Functional Annotation",
+                                                    choices = c(KEGG = "KEGG", REACTOME="REACTOME",GO = "GO"),
+                                                    selected = "KEGG")
+                              ),
+                              column(6,radioButtons("GOType","Select GO",
+                                                    choices = c(BP = "BP", CC="CC",MF = "MF"),
+                                                    selected = "BP")
+                              )),
+                            fluidRow(column(6,
+                                            radioButtons("MapValueType","Choose Values Type",
+                                                         choices = c(Pvalue = "PVAL", GenesModifications="FC",GenesModifications_PValue  = "FCPV"),
+                                                         selected = "FC")
+                            ),
+                            column(6,selectInput(inputId = "pvalueTh", label = "P-value threshold:",choices = list(0.001,0.005,0.01,0.02,0.03,0.04,0.05,0.06,0.07,0.08,0.09),selected = 0.05)
+                                   
+                                   
+                            )),
+                            fluidRow( #TOBECHANGED
+                              column(6,checkboxInput("only_annotated", "Annotated genes only", value = TRUE)),
+                              column(6, sliderInput("min_intersection", "Minumum number of genes in the intersection:",
+                                                    min = 0, max = 100, value = 0))
+                            )
+                            
                           ),
-                          column(6,selectInput(inputId = "pvalueTh", label = "P-value threshold:",choices = list(0.001,0.005,0.01,0.02,0.03,0.04,0.05,0.06,0.07,0.08,0.09),selected = 0.05)
+                          tags$h5("3. Display parameters"),
+                          wellPanel(
+                            # Horizontal line ----
+                            fluidRow(
+                              
+                              column(6,radioButtons("aggregation","Aggregation Function",
+                                                    choices = c(min = "min", max = "max",mean = "mean",
+                                                                median = "median"),
+                                                    selected = "mean")
+                              ),
+                              column(6,radioButtons("pcorrection","Correction Method",
+                                                    #choices = c(gSCS = "analytical", fdr = "fdr", bonferroni = "bonferroni"),
+                                                    choices = c(gSCS = "analytical", fdr = "fdr", bonferroni = "bonferroni", Nominal = "none"),     #TOBECHANGED
+                                                    
+                                                    selected = "analytical"),
+                                     shinyBS::bsTooltip(id = "pcorrection",
+                                                        title = "Default is g:SCS. Check g:Profiler web page for more info",
+                                                        placement = "top")
+                                     
+                              )),
 
-
-                        ))
-
-                      ),
-                      tags$h5("3. Display parameters"),
-                      wellPanel(
-                        # Horizontal line ----
-                        fluidRow(
-
-                          column(6,radioButtons("aggregation","Aggregation Function",
-                                                choices = c(min = "min", max = "max",mean = "mean",
-                                                            median = "median"),
-                                                selected = "mean")
+                            
+                            fluidRow(column(6,radioButtons("continuous","Plot modification",
+                                                           choices = c(value = "continuous",
+                                                                       sign = "discrete"),
+                                                           selected = "continuous")),
+                                     column(6,actionButton("computePathways","Generate Map")))
+                            
+                            
+                          )
+                          
+                        ),
+                        
+                        mainPanel(
+                          wellPanel(
+                            #fluidRow(tableOutput("contents")),
+                            fluidRow(DT::dataTableOutput("contents")),
+                            tags$hr(),
+                            
+                            fluidRow(textOutput("updatedTable")),
+                            fluidRow(DT::dataTableOutput("colSums"))
                           ),
-                          column(6,radioButtons("pcorrection","Correction Method",
-                                                choices = c(gSCS = "analytical", fdr = "fdr", bonferroni = "bonferroni"),
-                                                selected = "analytical"),
-                                   shinyBS::bsTooltip(id = "pcorrection",
-                                                      title = "Default is g:SCS. Check g:Profiler web page for more info",
-                                                      placement = "top")
-
-                          )),
-
-                        fluidRow(column(6,radioButtons("continuous","Plot modification",
-                                                choices = c(value = "continuous",
-                                                            sign = "discrete"),
-                                                selected = "continuous")),
-                          column(6,actionButton("computePathways","Generate Map")))
-
-
+                          wellPanel(
+                            fluidRow(textOutput("updatedPat")),
+                            fluidRow(DT::dataTableOutput("colSumsPat"))
+                          )
                         )
-
-                      ),
-
-                      mainPanel(
-                        wellPanel(
-                          #fluidRow(tableOutput("contents")),
-                          fluidRow(DT::dataTableOutput("contents")),
-                          tags$hr(),
-
-                          fluidRow(textOutput("updatedTable")),
-                          fluidRow(DT::dataTableOutput("colSums"))
+                      )# end sidebar layout
+             ),
+             tabPanel("Plot Maps",value="PlotMaps",
+                      sidebarLayout(
+                        sidebarPanel(
+                          wellPanel(
+                            tags$h5("1. Data Selection"),
+                            fluidRow(
+                              selectInput(inputId = "level", label = "Browse hierarchy: choose a level",choices = list(1,2,3))
+                            ),
+                            fluidRow(
+                              column(4,uiOutput("chose_lev1")),
+                              shinyBS::bsTooltip(id = "chose_lev1",title = "Note: remove ALL from the list for specific selection.",placement = "top"),
+                              column(4,uiOutput("chose_lev2")),
+                              shinyBS::bsTooltip(id = "chose_lev2",title = "Note: remove ALL from the list for specific selection.",placement = "top"),
+                              column(3,uiOutput("chose_lev3")),
+                              shinyBS::bsTooltip(id = "chose_lev3",title = "Note: remove ALL from the list for specific selection.",placement = "top")
+                              
+                            ),
+                            fluidRow(
+                              uiOutput("selectColumn"),
+                              shinyBS::bsTooltip(id = "selectColumn",title = "Note: remove ALL from the list for specific selection.",placement = "top")
+                              
+                            )
                           ),
-                        wellPanel(
-                          fluidRow(textOutput("updatedPat")),
-                          fluidRow(DT::dataTableOutput("colSumsPat"))
+                          wellPanel(
+                            tags$h5("2. Plot section"),
+                            
+                            fluidRow(
+                              column(4,checkboxInput("doGrouping", "Show categories", value = TRUE)),
+                              column(4,checkboxInput("aspectRatio", "Keep aspect ratio", value = TRUE)),
+                              column(4,actionButton("do", "Plot Map")),
+                              shinyBS::bsTooltip(id = "do",title ="NOTE: press the Plot Mat button every time you update the map!",placement = "bottom")
+                              
+                            )
+                          ),
+                          wellPanel(
+                            tags$h5("3. Download Selection"),
+                            fluidRow(
+                              column(4,textInput(inputId ="img_width", value = 15,label = "Width")), #width
+                              column(4,textInput(inputId ="img_height", value = 30,label = "Height")),
+                              column(4,downloadButton('downloadData')),
+                              shinyBS::bsTooltip(id = "downloadData",title ="NOTE: when downloading, specify image size in inches ",placement = "bottom")
+                            )
+                          ),
+                          wellPanel(
+                            tags$h5("4. Clustering Selection"),
+                            fluidRow(
+                              column(4,uiOutput("nClust")),
+                              column(4,selectInput("ClusterMethod","Select aggregation method",list("ward","complete","single"),selected = "complete")),
+                              column(4,selectInput("Distance","Select distance",list("euclidean","jaccard","jaccard+euclidean"),selected = "jaccard"))
+                            ),
+                            fluidRow(
+                              column(6,actionButton("doCluster", "Cluster Samples")),
+                              column(6,actionButton("resetCluster","Reset Cluster"))
+                            )
+                          )
+                          
+                        ),
+                        mainPanel(
+                          tags$h5("Use scrollbars to navigate and see the whole map"),
+                          
+                          tabsetPanel(
+                            
+                            tabPanel("Heatmap",fluidRow(column(12,align="left",shinycssloaders::withSpinner(plotOutput(outputId="heatmap"), type=6)))),
+                            tabPanel("Heatmap Genes",
+                                     fluidRow(column(4,
+                                                     selectInput(inputId="levelGene", label="Choose a hierarchy level", choices=list(1,2,3))
+                                     ),column(4,
+                                              uiOutput("choosePath")
+                                     ),column(4,
+                                              selectInput(inputId="selScoreType", label="Show Values", choices=list("logFC"="lfc", "P-Value"="pval", "Combined"="comb"), selected="lfc")
+                                     )),fluidRow(column(4,
+                                                        #shinyBS::bsButton("doGeneHeatMap", label="Plot", style="danger", icon=icon("exclamation-circle"))
+                                                        actionButton("doGeneHeatMap", "Plot")
+                                     )),fluidRow(column(12,align="center",
+                                                        shinycssloaders::withSpinner(plotOutput(outputId="heatmapGenes"), type=6)
+                                     ))
+                            ),
+                            tabPanel("Clustering",plotOutput(outputId="hclust_plot", width = "100%"))
+                          )
+                          #fluidRow(plotOutput(outputId="heatmap",height = 900))
                         )
                       )
-                    )# end sidebar layout
-           ),
-           tabPanel("Plot Maps",value="PlotMaps",
-              sidebarLayout(
-                sidebarPanel(
-                  wellPanel(
-                   tags$h5("1. Data Selection"),
-                    fluidRow(
-                      selectInput(inputId = "level", label = "Browse hierarchy: choose a level",choices = list(1,2,3))
-                    ),
-                    fluidRow(
-                      column(4,uiOutput("chose_lev1")),
-                      shinyBS::bsTooltip(id = "chose_lev1",title = "Note: remove ALL from the list for specific selection.",placement = "top"),
-                      column(4,uiOutput("chose_lev2")),
-                      shinyBS::bsTooltip(id = "chose_lev2",title = "Note: remove ALL from the list for specific selection.",placement = "top"),
-                      column(3,uiOutput("chose_lev3")),
-                      shinyBS::bsTooltip(id = "chose_lev3",title = "Note: remove ALL from the list for specific selection.",placement = "top")
-
-                    ),
-                    fluidRow(
-                      uiOutput("selectColumn"),
-                      shinyBS::bsTooltip(id = "selectColumn",title = "Note: remove ALL from the list for specific selection.",placement = "top")
-
-                    )
-                  ),
-                  wellPanel(
-                    tags$h5("2. Plot section"),
-
-                    fluidRow(
-                      column(4,checkboxInput("doGrouping", "Show categories", value = TRUE)),
-                      column(4,checkboxInput("aspectRatio", "Keep aspect ratio", value = TRUE)),
-                      column(4,actionButton("do", "Plot Map")),
-                      shinyBS::bsTooltip(id = "do",title ="NOTE: press the Plot Mat button every time you update the map!",placement = "bottom")
-
-                    )
-                  ),
-                  wellPanel(
-                    tags$h5("3. Download Selection"),
-                    fluidRow(
-                      column(4,textInput(inputId ="img_width", value = 15,label = "Width")), #width
-                      column(4,textInput(inputId ="img_height", value = 30,label = "Height")),
-                      column(4,downloadButton('downloadData')),
-                      shinyBS::bsTooltip(id = "downloadData",title ="NOTE: when downloading, specify image size in inches ",placement = "bottom")
-                    )
-                    ),
-                  wellPanel(
-                   tags$h5("4. Clustering Selection"),
-                    fluidRow(
-                      column(4,uiOutput("nClust")),
-                      column(4,selectInput("ClusterMethod","Select aggregation method",list("ward","complete","single"),selected = "complete")),
-                      column(4,selectInput("Distance","Select distance",list("euclidean","jaccard","jaccard+euclidean"),selected = "jaccard"))
-                    ),
-                    fluidRow(
-                      column(6,actionButton("doCluster", "Cluster Samples")),
-                      column(6,actionButton("resetCluster","Reset Cluster"))
-                    )
-                  )
-
-                ),
-                mainPanel(
-                                    tags$h5("Use scrollbars to navigate and see the whole map"),
-
-                  tabsetPanel(
-
-                  tabPanel("Heatmap",fluidRow(column(12,align="left",shinycssloaders::withSpinner(plotOutput(outputId="heatmap"), type=6)))),
-                  tabPanel("Heatmap Genes",
-                    fluidRow(column(4,
-                        selectInput(inputId="levelGene", label="Choose a hierarchy level", choices=list(1,2,3))
-                      ),column(4,
-                        uiOutput("choosePath")
-                      ),column(4,
-                        selectInput(inputId="selScoreType", label="Show Values", choices=list("logFC"="lfc", "P-Value"="pval", "Combined"="comb"), selected="lfc")
-                    )),fluidRow(column(4,
-                        #shinyBS::bsButton("doGeneHeatMap", label="Plot", style="danger", icon=icon("exclamation-circle"))
-                        actionButton("doGeneHeatMap", "Plot")
-                    )),fluidRow(column(12,align="center",
-                      shinycssloaders::withSpinner(plotOutput(outputId="heatmapGenes"), type=6)
-                    ))
-                  ),
-                    tabPanel("Clustering",plotOutput(outputId="hclust_plot", width = "100%"))
-                  )
-                  #fluidRow(plotOutput(outputId="heatmap",height = 900))
-                )
-              )
-           )
-)
-)
+             )
+  )
+  )
 #
 # #Define UI for application that plots random distributions
 # shinyUI(fluidPage(
