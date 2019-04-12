@@ -2,6 +2,37 @@ library(shiny)
 library(shinyjs)
 library(shinyBS)
 
+jsCode <- "
+shinyjs.disableTab = function(name) {
+  var tab = $('.nav li a[data-value=' + name + ']');
+  tab.bind('click.tab', function(e) {
+    e.preventDefault();
+    return false;
+  });
+  tab.addClass('disabled');
+}
+
+shinyjs.enableTab = function(name) {
+  var tab = $('.nav li a[data-value=' + name + ']');
+  tab.unbind('click.tab');
+  tab.removeClass('disabled');
+}
+
+shinyjs.addCustomTooltip = function(iVars) {
+  var name = iVars[0]
+  var msg = iVars[1]
+  var tab_li = $('a[data-value=' + name + ']').parent();
+  tab_li.attr('data-toggle', 'tooltip')
+  tab_li.attr('title', msg)
+}
+
+shinyjs.removeCustomTooltip = function(name) {
+  var tab_li = $('a[data-value=' + name + ']').parent();
+  tab_li.removeAttr('data-toggle');
+  tab_li.removeAttr('title');
+}
+"
+
 appCSS <- "
 #loading-content {
 position: absolute;
@@ -23,10 +54,16 @@ margin-left: auto;
 margin-right: auto;
 vertical-align: middle;
 z-index: 1000000;
+}
+.nav li a.disabled {
+  background-color: #aaa !important;
+  color: #333 !important;
+  cursor: not-allowed !important;
+  border-color: #aaa !important;
 }"
 fluidPage(
   useShinyjs(),
-  #extendShinyjs(text=jsCode),
+  extendShinyjs(text=jsCode),
   #tags$head(tags$script(src="resizing.js")),
   inlineCSS(appCSS),
   hidden(div(id="loading-content",
@@ -45,14 +82,14 @@ fluidPage(
                                      radioButtons("organism","1) Organisms",
                                                   choices = c(human = "Human", mouse = "Mouse"),selected = "Human"),
                                      shinyBS::bsTooltip(id = "organism",title = "Note: select organism and gene ID before uploading the file",placement = "bottom")
-                                     
+
                               ) ,
                               column(4,radioButtons("idtype","2) GeneID",
                                                     choices = c(symbols = "SYMBOL", ensemble = "ENSEMBL",entrez = "ENTREZID"),
                                                     selected = "SYMBOL"),
                                      shinyBS::bsTooltip(id = "idtype",title = "Note: select organism and gene ID before uploading the file",placement = "bottom")
-                                     
-                                     
+
+
                               ),
                               column(4,
                                      fileInput("file1", "3) Choose Excel File",
@@ -60,7 +97,7 @@ fluidPage(
                                                accept = c("text/csv/xlsx",
                                                           "text/comma-separated-values,text/plain/excel",
                                                           ".xlsx")))
-                              
+
                             )
                             # column(4,
                             # radioButtons("continuous","Plot modification",
@@ -68,9 +105,9 @@ fluidPage(
                             #                          sign = "discrete"),
                             #              selected = "continuous")
                             # )
-                            
-                            
-                            
+
+
+
                             # fluidRow(
                             #   column(6,
                             #          radioButtons("fileType","FileType",
@@ -101,21 +138,21 @@ fluidPage(
                                                          selected = "FC")
                             ),
                             column(6,selectInput(inputId = "pvalueTh", label = "P-value threshold:",choices = list(0.001,0.005,0.01,0.02,0.03,0.04,0.05,0.06,0.07,0.08,0.09),selected = 0.05)
-                                   
-                                   
+
+
                             )),
                             fluidRow( #TOBECHANGED
                               column(6,checkboxInput("only_annotated", "Annotated genes only", value = TRUE)),
                               column(6, sliderInput("min_intersection", "Minumum number of genes in the intersection:",
                                                     min = 0, max = 100, value = 0))
                             )
-                            
+
                           ),
                           tags$h5("3. Display parameters"),
                           wellPanel(
                             # Horizontal line ----
                             fluidRow(
-                              
+
                               column(6,radioButtons("aggregation","Aggregation Function",
                                                     choices = c(min = "min", max = "max",mean = "mean",
                                                                 median = "median"),
@@ -124,32 +161,32 @@ fluidPage(
                               column(6,radioButtons("pcorrection","Correction Method",
                                                     #choices = c(gSCS = "analytical", fdr = "fdr", bonferroni = "bonferroni"),
                                                     choices = c(gSCS = "analytical", fdr = "fdr", bonferroni = "bonferroni", Nominal = "none"),     #TOBECHANGED
-                                                    
+
                                                     selected = "analytical"),
                                      shinyBS::bsTooltip(id = "pcorrection",
                                                         title = "Default is g:SCS. Check g:Profiler web page for more info",
                                                         placement = "top")
-                                     
+
                               )),
 
-                            
+
                             fluidRow(column(6,radioButtons("continuous","Plot modification",
                                                            choices = c(value = "continuous",
                                                                        sign = "discrete"),
                                                            selected = "continuous")),
                                      column(6,actionButton("computePathways","Generate Map")))
-                            
-                            
+
+
                           )
-                          
+
                         ),
-                        
+
                         mainPanel(
                           wellPanel(
                             #fluidRow(tableOutput("contents")),
                             fluidRow(DT::dataTableOutput("contents")),
                             tags$hr(),
-                            
+
                             fluidRow(textOutput("updatedTable")),
                             fluidRow(DT::dataTableOutput("colSums"))
                           ),
@@ -175,23 +212,23 @@ fluidPage(
                               shinyBS::bsTooltip(id = "chose_lev2",title = "Note: remove ALL from the list for specific selection.",placement = "top"),
                               column(3,uiOutput("chose_lev3")),
                               shinyBS::bsTooltip(id = "chose_lev3",title = "Note: remove ALL from the list for specific selection.",placement = "top")
-                              
+
                             ),
                             fluidRow(
                               uiOutput("selectColumn"),
                               shinyBS::bsTooltip(id = "selectColumn",title = "Note: remove ALL from the list for specific selection.",placement = "top")
-                              
+
                             )
                           ),
                           wellPanel(
                             tags$h5("2. Plot section"),
-                            
+
                             fluidRow(
                               column(4,checkboxInput("doGrouping", "Show categories", value = TRUE)),
                               column(4,checkboxInput("aspectRatio", "Keep aspect ratio", value = TRUE)),
                               column(4,actionButton("do", "Plot Map")),
                               shinyBS::bsTooltip(id = "do",title ="NOTE: press the Plot Mat button every time you update the map!",placement = "bottom")
-                              
+
                             )
                           ),
                           wellPanel(
@@ -215,15 +252,15 @@ fluidPage(
                               column(6,actionButton("resetCluster","Reset Cluster"))
                             )
                           )
-                          
+
                         ),
                         mainPanel(
                           tags$h5("Use scrollbars to navigate and see the whole map"),
-                          
+
                           tabsetPanel(
-                            
+
                             tabPanel("Heatmap",fluidRow(column(12,align="left",shinycssloaders::withSpinner(plotOutput(outputId="heatmap"), type=6)))),
-                            tabPanel("Heatmap Genes",
+                            tabPanel(title="Heatmap Genes", id="hmGenes", value="hmGenes",
                                      fluidRow(column(4,
                                                      selectInput(inputId="levelGene", label="Choose a hierarchy level", choices=list(1,2,3))
                                      ),column(4,
