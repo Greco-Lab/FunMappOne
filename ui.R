@@ -80,7 +80,7 @@ fluidPage(
                             fluidRow(
                               column(4,
                                      radioButtons("organism","1) Organisms",
-                                                  choices = c(human = "Human", mouse = "Mouse"),selected = "Human"),
+                                                  choices = c(human = "Human", mouse = "Mouse",rat = "Rat"),selected = "Human"),
                                      shinyBS::bsTooltip(id = "organism",title = "Note: select organism and gene ID before uploading the file",placement = "bottom")
 
                               ) ,

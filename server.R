@@ -27,6 +27,8 @@ set.seed(12)
 load(file ="updated_kegg_hierarhcy.RData")
 load("mm_reactome_hierarchy.RData")
 load("hm_reactome_hierarchy.RData")
+load("rat_reactome_hierarchy.RData")
+load("rat_kegg_hyerarchy.RData")
 reduced_kegg_hierarchy = kegg_hierarchy
 
 shinyServer(function(input, output,session) {
@@ -288,7 +290,8 @@ shinyServer(function(input, output,session) {
       reactome_hierarchy[,1] = mouse_map[reactome_hierarchy[,1],2]
       reactome_hierarchy[,2] = mouse_map[unlist(reactome_hierarchy[,2]),2]
       reactome_hierarchy[,3] = mouse_map[unlist(reactome_hierarchy[,3]),2]
-    }else{
+    }
+    if(input$organism == "Human"){
       org = "hsa"
       reactome_hierarchy = hm_reactome_hierarchy
       reactome_hierarchy$ID = unlist(reactome_hierarchy$Pathway)
@@ -297,7 +300,16 @@ shinyServer(function(input, output,session) {
       reactome_hierarchy[,3] = human_map[unlist(reactome_hierarchy[,3]),2]
       org_enrich = "hsapiens"
     }
-
+    if(input$organism == "Rat"){
+      org = "Rat"
+      reactome_hierarchy = rat_reactome_hierarchy
+      reactome_hierarchy$ID = unlist(reactome_hierarchy$Pathway)
+      reactome_hierarchy[,1] = rat_map[reactome_hierarchy[,1],2]
+      reactome_hierarchy[,2] = rat_map[unlist(reactome_hierarchy[,2]),2]
+      reactome_hierarchy[,3] = rat_map[unlist(reactome_hierarchy[,3]),2]
+      org_enrich = "rnorvegicus"
+      
+    }
     ####### remove reactome duplicates
     reactome_hierarchy=unique(reactome_hierarchy)
 
@@ -359,19 +371,34 @@ shinyServer(function(input, output,session) {
     #EnrichDatList = lapply(gVars$GList,enrich,type_enrich,org_enrich,as.numeric(input$pvalueTh),input$pcorrection)
     #save(EnrichDatList,file = "demo/EnrichDatList.RData")
 
-    if(input$pcorrection == "none"){
+    # if(input$pcorrection == "none"){
+    #   print("Nominal PValue")
+    #   EnrichDatList = lapply(gVars$GList,enrich,type_enrich,org_enrich,as.numeric(input$pvalueTh),"bonferroni", sig = FALSE, mis = as.numeric(input$min_intersection), only_annotated=input$only_annotated)
+    #   for(i in 1:length(EnrichDatList)){
+    #     ERi = EnrichDatList[[i]]
+    #     ERi$pValueAdj = ERi$pValueAdj / length(ERi$pValueAdj)
+    #     ERi$pValue = ERi$pValue / length(ERi$pValue)
+    #     EnrichDatList[[i]] = ERi
+    #   }
+    # }else{
+    #   EnrichDatList = lapply(gVars$GList,enrich,type_enrich,org_enrich,as.numeric(input$pvalueTh),input$pcorrection, sig = TRUE, mis = as.numeric(input$min_intersection),only_annotated=input$only_annotated)
+    # }
+
+    if(input$pcorrection == "none"){ 
       print("Nominal PValue")
-      EnrichDatList = lapply(gVars$GList,enrich,type_enrich,org_enrich,as.numeric(input$pvalueTh),"bonferroni", sig = FALSE, mis = as.numeric(input$min_intersection), only_annotated=input$only_annotated)
+      #as.numeric(input$pvalueTh)
+      EnrichDatList = lapply(gVars$GList,enrich,type_enrich,org_enrich,1,"bonferroni", sig = FALSE, mis = as.numeric(input$min_intersection), only_annotated=input$only_annotated)
       for(i in 1:length(EnrichDatList)){
         ERi = EnrichDatList[[i]]
         ERi$pValueAdj = ERi$pValueAdj / length(ERi$pValueAdj)
         ERi$pValue = ERi$pValue / length(ERi$pValue)
-        EnrichDatList[[i]] = ERi
+        idx = which(ERi[,4]<=as.numeric(input$pvalueTh))
+        EnrichDatList[[i]] = ERi[idx,]
+        
       }
     }else{
       EnrichDatList = lapply(gVars$GList,enrich,type_enrich,org_enrich,as.numeric(input$pvalueTh),input$pcorrection, sig = TRUE, mis = as.numeric(input$min_intersection),only_annotated=input$only_annotated)
     }
-
 
     if(input$EnrichType == "GO"){
       #find the list of term into  the enriched list
