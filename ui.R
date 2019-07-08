@@ -260,6 +260,15 @@ fluidPage(
                           tabsetPanel(
 
                             tabPanel("Heatmap",fluidRow(column(12,align="left",shinycssloaders::withSpinner(plotOutput(outputId="heatmap"), type=6)))),
+                            tabPanel("Enrichment Table",
+                                     fluidRow(column(12,
+                                        uiOutput("selectExperiment")
+                                     )),
+                                     fluidRow(
+                                       column(12,
+                                              DT::dataTableOutput("PAT_table")
+                                       ))
+                            ),
                             tabPanel(title="Heatmap Genes", id="hmGenes", value="hmGenes",
                                      fluidRow(column(4,
                                                      selectInput(inputId="levelGene", label="Choose a hierarchy level", choices=list(1,2,3))

@@ -786,6 +786,19 @@ shinyServer(function(input, output,session) {
   #       file.copy("www/map.pdf", file)
   #     }
   #   )
+  
+  output$selectExperiment <- renderUI({
+    print("before")
+    # shiny::validate(
+    #   need(!is.null(gVars$EnrichDatList), "No Enrichment!")
+    # )
+    if(is.null(gVars$EnrichDatList)){
+      print("No enrichment")
+      return(NULL)
+    }
+    print("ciaooo")
+    selectInput("exp_name", "Experiments", choices=names(gVars$EnrichDatList), selected = names(gVars$EnrichDatList)[1])#c("All",unique(gVars$phTable[,gVars$TPColID])))
+  })
 
 
   output$downloadData <- downloadHandler(
@@ -1396,5 +1409,29 @@ shinyServer(function(input, output,session) {
       js$removeCustomTooltip("hmGenes")
     }
   })
+  
+  output$PAT_table = DT::renderDataTable({
+    # if(is.null(gVars$MQ_BMD_filtered)){ 
+    #   print("Null BMD")
+    #   return(NULL)
+    # }
+    
+    if(is.null(gVars$EnrichDatList)){
+      print("No enrichment")
+      return(NULL)
+    }
+    print("Ciao")
+    print(input$exp_name)
 
+    ER <- gVars$EnrichDatList[[input$exp_name]]
+    ER = ER[,c(5,1:4)]
+    DT::datatable(ER, filter="top",
+                  options = list(
+                    search = list(regex=TRUE, caseInsensitive=FALSE),
+                    scrollX=TRUE,
+                    ordering=T
+                  )
+    )
+  })
+  
 })
