@@ -251,7 +251,9 @@ fluidPage(
                               column(6,actionButton("doCluster", "Cluster Samples")),
                               column(6,actionButton("resetCluster","Reset Cluster"))
                             )
-                          )
+                          ),
+                          tags$h5("5. Download enriched term lists as excel file"),
+                          downloadButton("downloadEnrichedPathwayTables", "Download")
 
                         ),
                         mainPanel(

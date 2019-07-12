@@ -22,6 +22,7 @@ library(tidyverse)
 library(gridExtra)
 library(grid)
 library(gtable)
+library(xlsx)
 set.seed(12)
 
 load(file ="updated_kegg_hierarhcy.RData")
@@ -1433,5 +1434,36 @@ shinyServer(function(input, output,session) {
                   )
     )
   })
+  
+  output$downloadEnrichedPathwayTables = downloadHandler(
+    filename = function() {
+      paste("terms_enrichment_table.xlsx", sep = "")
+    },
+    content = function(file) {
+      if(length(gVars$EnrichDatList)==0){ 
+        print("No enrichment tables to save!")
+        return(NULL)
+      }
+      
+      shinyjs::html(id="loadingText", "Saving tables")
+      shinyjs::show(id="loading-content")
+      on.exit({
+        print("inside on exit")
+        shinyjs::hide(id="loading-content", anim=TRUE, animType="fade")    
+      })
+      
+      print("I'm saving enrichment tables")
+      write.xlsx(gVars$EnrichDatList[[1]], file, sheetName = names(gVars$EnrichDatList)[1]) 
+      
+      if(length(gVars$EnrichDatList)>1){
+        for(i in 2:length(gVars$EnrichDatList)){
+          if(nrow(gVars$EnrichDatList[[i]])>0){
+            write.xlsx(gVars$EnrichDatList[[i]], file, sheetName =  names(gVars$EnrichDatList)[i], append = TRUE) 
+          }
+        }
+      }
+      print("Enrichment table stored!")
+    }
+  )
   
 })
