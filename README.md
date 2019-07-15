@@ -28,6 +28,22 @@ libssl-dev
 ### Install R dependencies
 
 ```R
+#Universal Bioconductor package installation function
+  install.bioc <- function(pkg){
+    vers <- getRversion()
+    if (vers >= "3.6"){
+      if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
+      BiocManager::install(pkg)
+    }else{
+      if (!requireNamespace("BiocInstaller", quietly = TRUE)){
+        source("https://bioconductor.org/biocLite.R")
+        biocLite(pkg, suppressUpdates=TRUE)
+      }else{
+        BiocInstaller::biocLite(pkg, suppressUpdates=TRUE)
+      }
+    }
+  }
+
 #Install Bioconductor dependencies
 source("http://bioconductor.org/biocLite.R")
 bioc_pkgs <- c("org.Hs.eg.db", "org.Mm.eg.db", "KEGG.db", "reactome.db", "GOSim")
@@ -36,7 +52,7 @@ if(length(bioc_pkgs.inst)>0){
   print(paste0("Missing ", length(bioc_pkgs.inst), " Bioconductor Packages:"))
   for(pkg in bioc_pkgs.inst){
     print(paste0("Installing Package:'", pkg, "'..."))
-    biocLite(pkg, suppressUpdates=TRUE)
+    install.bioc(pkg)
     print("Installed!!!")
   }
 }
