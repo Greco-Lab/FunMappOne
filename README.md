@@ -45,7 +45,6 @@ libssl-dev
   }
 
 #Install Bioconductor dependencies
-source("http://bioconductor.org/biocLite.R")
 bioc_pkgs <- c("org.Hs.eg.db", "org.Mm.eg.db", "KEGG.db", "reactome.db", "GOSim")
 bioc_pkgs.inst <- bioc_pkgs[!(bioc_pkgs %in% rownames(installed.packages()))]
 if(length(bioc_pkgs.inst)>0){
