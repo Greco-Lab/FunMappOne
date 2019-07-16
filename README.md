@@ -45,7 +45,7 @@ libssl-dev
   }
 
 #Install Bioconductor dependencies
-bioc_pkgs <- c("org.Hs.eg.db", "org.Mm.eg.db", "KEGG.db", "reactome.db", "GOSim")
+bioc_pkgs <- c("org.Hs.eg.db", "org.Mm.eg.db", "org.Rn.eg.db", "KEGG.db", "reactome.db", "GOSim")
 bioc_pkgs.inst <- bioc_pkgs[!(bioc_pkgs %in% rownames(installed.packages()))]
 if(length(bioc_pkgs.inst)>0){
   print(paste0("Missing ", length(bioc_pkgs.inst), " Bioconductor Packages:"))
@@ -60,7 +60,7 @@ if(length(bioc_pkgs.inst)>0){
 cran_pkgs <- c("ggplotify", "RColorBrewer", "reshape", "ggplot2", "shiny", "shinyjs", "tibble",
                "gProfileR", "DT", "randomcoloR", "readxl", "cellranger", "devtools", "scales",
                "gtools", "shinycssloaders", "shinyBS", "tidyverse",
-                "gridExtra", "gtable", "grid")
+                "gridExtra", "gtable", "grid", "xlsx")
 cran_pkgs.inst <- cran_pkgs[!(cran_pkgs %in% rownames(installed.packages()))]
 if(length(cran_pkgs.inst)>0){
   print(paste0("Missing ", length(cran_pkgs.inst), " CRAN Packages:"))
