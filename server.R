@@ -309,7 +309,7 @@ shinyServer(function(input, output,session) {
       reactome_hierarchy[,2] = rat_map[unlist(reactome_hierarchy[,2]),2]
       reactome_hierarchy[,3] = rat_map[unlist(reactome_hierarchy[,3]),2]
       org_enrich = "rnorvegicus"
-      
+
     }
     ####### remove reactome duplicates
     reactome_hierarchy=unique(reactome_hierarchy)
@@ -385,7 +385,7 @@ shinyServer(function(input, output,session) {
     #   EnrichDatList = lapply(gVars$GList,enrich,type_enrich,org_enrich,as.numeric(input$pvalueTh),input$pcorrection, sig = TRUE, mis = as.numeric(input$min_intersection),only_annotated=input$only_annotated)
     # }
 
-    if(input$pcorrection == "none"){ 
+    if(input$pcorrection == "none"){
       print("Nominal PValue")
       #as.numeric(input$pvalueTh)
       EnrichDatList = lapply(gVars$GList,enrich,type_enrich,org_enrich,1,"bonferroni", sig = FALSE, mis = as.numeric(input$min_intersection), only_annotated=input$only_annotated)
@@ -395,7 +395,7 @@ shinyServer(function(input, output,session) {
         ERi$pValue = ERi$pValue / length(ERi$pValue)
         idx = which(ERi[,4]<=as.numeric(input$pvalueTh))
         EnrichDatList[[i]] = ERi[idx,]
-        
+
       }
     }else{
       EnrichDatList = lapply(gVars$GList,enrich,type_enrich,org_enrich,as.numeric(input$pvalueTh),input$pcorrection, sig = TRUE, mis = as.numeric(input$min_intersection),only_annotated=input$only_annotated)
@@ -787,7 +787,7 @@ shinyServer(function(input, output,session) {
   #       file.copy("www/map.pdf", file)
   #     }
   #   )
-  
+
   output$selectExperiment <- renderUI({
     print("before")
     # shiny::validate(
@@ -1224,6 +1224,10 @@ shinyServer(function(input, output,session) {
     geneIDCol <- geneTableColNames[1]
     print("geneIDCol")
     print(geneIDCol)
+
+    #Convert gene table matrices to data frames
+    GListMod2 = lapply(GListMod, as.data.frame)
+
     reducedGeneTable <- purrr::reduce(GListMod, dplyr::full_join, by=geneIDCol)
     print("str(reducedGeneTable)")
     print(str(reducedGeneTable))
@@ -1320,8 +1324,14 @@ shinyServer(function(input, output,session) {
 
     #Performing discretization
     if (input$continuous=="discrete"){
+      #Convert text values to numeric
+      rNames <- rownames(mat_to_Plot)
+      mat_to_Plot <- apply(mat_to_Plot, 2, as.numeric)
+      rownames(mat_to_Plot) <- rNames
+
       mat_to_Plot[mat_to_Plot<0]=-1
       mat_to_Plot[mat_to_Plot>0]=1
+      
       isDiscrete = T
     }else{
       isDiscrete = F
@@ -1410,13 +1420,13 @@ shinyServer(function(input, output,session) {
       js$removeCustomTooltip("hmGenes")
     }
   })
-  
+
   output$PAT_table = DT::renderDataTable({
-    # if(is.null(gVars$MQ_BMD_filtered)){ 
+    # if(is.null(gVars$MQ_BMD_filtered)){
     #   print("Null BMD")
     #   return(NULL)
     # }
-    
+
     if(is.null(gVars$EnrichDatList)){
       print("No enrichment")
       return(NULL)
@@ -1434,36 +1444,36 @@ shinyServer(function(input, output,session) {
                   )
     )
   })
-  
+
   output$downloadEnrichedPathwayTables = downloadHandler(
     filename = function() {
       paste("terms_enrichment_table.xlsx", sep = "")
     },
     content = function(file) {
-      if(length(gVars$EnrichDatList)==0){ 
+      if(length(gVars$EnrichDatList)==0){
         print("No enrichment tables to save!")
         return(NULL)
       }
-      
+
       shinyjs::html(id="loadingText", "Saving tables")
       shinyjs::show(id="loading-content")
       on.exit({
         print("inside on exit")
-        shinyjs::hide(id="loading-content", anim=TRUE, animType="fade")    
+        shinyjs::hide(id="loading-content", anim=TRUE, animType="fade")
       })
-      
+
       print("I'm saving enrichment tables")
-      write.xlsx(gVars$EnrichDatList[[1]], file, sheetName = names(gVars$EnrichDatList)[1]) 
-      
+      write.xlsx(gVars$EnrichDatList[[1]], file, sheetName = names(gVars$EnrichDatList)[1])
+
       if(length(gVars$EnrichDatList)>1){
         for(i in 2:length(gVars$EnrichDatList)){
           if(nrow(gVars$EnrichDatList[[i]])>0){
-            write.xlsx(gVars$EnrichDatList[[i]], file, sheetName =  names(gVars$EnrichDatList)[i], append = TRUE) 
+            write.xlsx(gVars$EnrichDatList[[i]], file, sheetName =  names(gVars$EnrichDatList)[i], append = TRUE)
           }
         }
       }
       print("Enrichment table stored!")
     }
   )
-  
+
 })
