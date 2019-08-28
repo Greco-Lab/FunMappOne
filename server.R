@@ -1228,7 +1228,7 @@ shinyServer(function(input, output,session) {
     #Convert gene table matrices to data frames
     GListMod2 = lapply(GListMod, as.data.frame)
 
-    reducedGeneTable <- purrr::reduce(GListMod, dplyr::full_join, by=geneIDCol)
+    reducedGeneTable <- purrr::reduce(GListMod2, dplyr::full_join, by=geneIDCol)
     print("str(reducedGeneTable)")
     print(str(reducedGeneTable))
 
@@ -1331,7 +1331,7 @@ shinyServer(function(input, output,session) {
 
       mat_to_Plot[mat_to_Plot<0]=-1
       mat_to_Plot[mat_to_Plot>0]=1
-      
+
       isDiscrete = T
     }else{
       isDiscrete = F
