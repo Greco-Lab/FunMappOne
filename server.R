@@ -398,7 +398,7 @@ shinyServer(function(input, output,session) {
 
       }
     }else{
-      EnrichDatList = lapply(gVars$GList,enrich,type_enrich,org_enrich,as.numeric(input$pvalueTh),input$pcorrection, sig = TRUE, mis = as.numeric(input$min_intersection),only_annotated=input$only_annotated)
+      EnrichDatList = lapply(gVars$GList,enrich,type_enrich,org_enrich,as.numeric(input$pvalueTh),input$pcorrection, sig = input$only_significant, mis = as.numeric(input$min_intersection),only_annotated=input$only_annotated)
     }
 
     if(input$EnrichType == "GO"){
