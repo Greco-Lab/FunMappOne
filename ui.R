@@ -143,6 +143,7 @@ fluidPage(
                             )),
                             fluidRow( #TOBECHANGED
                               column(6,checkboxInput("only_annotated", "Annotated genes only", value = TRUE)),
+                              column(6,checkboxInput("only_significant", "Only significant", value = TRUE)),
                               column(6, sliderInput("min_intersection", "Minumum number of genes in the intersection:",
                                                     min = 0, max = 100, value = 0))
                             )
