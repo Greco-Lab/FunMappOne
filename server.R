@@ -1463,15 +1463,66 @@ shinyServer(function(input, output,session) {
       })
 
       print("I'm saving enrichment tables")
-      write.xlsx(gVars$EnrichDatList[[1]], file, sheetName = names(gVars$EnrichDatList)[1])
+      
+      #choices = c(KEGG = "KEGG", REACTOME="REACTOME",GO = "GO"),
 
-      if(length(gVars$EnrichDatList)>1){
-        for(i in 2:length(gVars$EnrichDatList)){
-          if(nrow(gVars$EnrichDatList[[i]])>0){
-            write.xlsx(gVars$EnrichDatList[[i]], file, sheetName =  names(gVars$EnrichDatList)[i], append = TRUE)
+      isFirst = TRUE
+      
+      for(i in 1:length(gVars$EnrichDatList)){
+        if(nrow(gVars$EnrichDatList[[i]])>0){
+          df = gVars$EnrichDatList[[i]]
+          
+          df_2_levels = c() #matrix(NA, nrow = nrow(df), ncol = 2)
+          df_rowNames = c()
+          
+          for(ii in 1:nrow(df)){
+            pos = which(gVars$hierarchy[,3] %in% df$Description[ii])
+            if(length(pos>0)){
+              
+              fl = c()
+              sl = c()
+              
+              for(zz in pos){
+                fl = c(fl, as.character(gVars$hierarchy[zz,1]))
+                sl = c(sl, as.character(gVars$hierarchy[zz,2]))
+              }
+              
+              df_2_levels = rbind(df_2_levels,c(paste(fl, collapse = ";"), paste(sl, collapse = ";")))
+              
+              #df_2_levels[ii,] = c(as.character(gVars$hierarchy[zz,1]),as.character(gVars$hierarchy[zz,2]))
+              #df_2_levels = rbind(df_2_levels,c(as.character(gVars$hierarchy[zz,1]),as.character(gVars$hierarchy[zz,2])))
+              
+              df_rowNames = c(df_rowNames,df$Description[ii])
+            }else{
+              df_2_levels = rbind(df_2_levels,c("NA","NA"))
+              df_rowNames = c(df_rowNames,df$Description[ii])
+            }
           }
+          
+          rownames(df_2_levels) = df_rowNames#df$Description
+          colnames(df_2_levels) = c("Level1","Level2")
+          
+          df = cbind(df, df_2_levels)
+          
+          if(isFirst){
+            write.xlsx(df, file, sheetName = names(gVars$EnrichDatList)[i])
+            isFirst = FALSE
+          }else{
+            write.xlsx(df, file, sheetName =  names(gVars$EnrichDatList)[i], append = TRUE)
+            XLConnect::xlcFreeMemory()
+          }
+          
         }
       }
+      # write.xlsx(gVars$EnrichDatList[[1]], file, sheetName = names(gVars$EnrichDatList)[1])
+      # 
+      # if(length(gVars$EnrichDatList)>1){
+      #   for(i in 2:length(gVars$EnrichDatList)){
+      #     if(nrow(gVars$EnrichDatList[[i]])>0){
+      #       write.xlsx(gVars$EnrichDatList[[i]], file, sheetName =  names(gVars$EnrichDatList)[i], append = TRUE)
+      #     }
+      #   }
+      # }
       print("Enrichment table stored!")
     }
   )

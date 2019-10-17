@@ -65,7 +65,7 @@ update_hierarchy=function(kegg_hierarchy,lev1_content,lev2_content,lev3_content)
 
 }
 
-#collapse a matrix of pathways X treatments based on the provided hierarchy and the deired level
+#collapse a matrix of pathways X treatments based on the provided hierarchy and the desired level
 #return a list of (matrix, subHierarchy) one element for each distinct collapsing level
 # the value is computed summarising row elements with the provided function col_fun (default is median)
 collapse_paths <- function (kegg_hierarchy,kegg_mat_cell, collapse_level=1,col_fun=function(x){median(x,na.rm = T)}) {
