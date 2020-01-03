@@ -11,5 +11,11 @@ RUN ["R", "CMD", "javareconf"]
 USER docker
 COPY install_dependencies.R /home/docker/install_dependencies.R
 RUN ["Rscript", "/home/docker/install_dependencies.R"]
+RUN mkdir /home/docker/shiny_app
+COPY ./* /home/docker/shiny_app/
+
+COPY Rprofile.site /usr/lib/R/etc/
+
+EXPOSE 3838
 
 ENTRYPOINT ["Rscript", "/home/docker/shiny_app/shiny_start.R"]
