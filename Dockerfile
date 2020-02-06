@@ -12,9 +12,11 @@ USER docker
 COPY install_dependencies.R /home/docker/install_dependencies.R
 RUN ["Rscript", "/home/docker/install_dependencies.R"]
 RUN mkdir /home/docker/shiny_app
-COPY ./* /home/docker/shiny_app/
+COPY ./*.R /home/docker/shiny_app/
+COPY ./*.RData /home/docker/shiny_app/
+COPY ./www /home/docker/shiny_app/
 
-COPY Rprofile.site /usr/lib/R/etc/
+COPY ./Rprofile.site /usr/lib/R/etc/
 
 EXPOSE 3838
 
