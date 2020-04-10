@@ -476,13 +476,13 @@ shinyServer(function(input, output,session) {
         if(input$MapValueType == "FCPV"){
           M = M2 * -log(M1)
         }
-      if(length(enriched_gene_sets)>1){
+      if(length(EnrichDatList)>1){
 			  rownames(M) = rownames(M1)
 			  colnames(M) = colnames(M1)
 			}else{
 			  MM = matrix(M, nrow = 1, ncol = length(M))
 			  colnames(MM) = names(M)
-			  rownames(MM) = names(enriched_gene_sets)
+			  rownames(MM) = names(EnrichDatList)
 			  M = as.data.frame(MM)
 			}
       }
