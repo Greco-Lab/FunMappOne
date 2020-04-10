@@ -455,11 +455,23 @@ shinyServer(function(input, output,session) {
     if(input$MapValueType == "PVAL"){
       print("only genes")
       M = kegg_mat_p(EnrichDatList,hierarchy = gVars$hierarchy)
+      if(length(EnrichDatList)==1){
+	    MM = matrix(M, nrow = 1, ncol = length(M))
+	    colnames(MM) = names(M)
+	    rownames(MM) = names(EnrichDatList)
+ 	    M = as.data.frame(MM)
+	}
     }else{
 
       if(NCol==1){
         shinyjs::info("No Modification provided! Enrichment will be performed by using only pvalues")
         M = kegg_mat_p(EnrichDatList,hierarchy = gVars$hierarchy)
+	if(length(EnrichDatList)==1){
+	    MM = matrix(M, nrow = 1, ncol = length(M))
+	    colnames(MM) = names(M)
+	    rownames(MM) = names(EnrichDatList)
+ 	    M = as.data.frame(MM)
+	}
 
       }else{
         M1 = kegg_mat_p(EnrichDatList,hierarchy = gVars$hierarchy)
