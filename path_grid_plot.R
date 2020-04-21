@@ -438,9 +438,20 @@ plot_grid_genes <- function(path_mat, title="", experiment_ann=c(), gene_group=N
   grbs_x_id <- which( sapply( lapply( nms , function(x) grepl( "axis.line.x" , x ) ) , any ) == 1 )
   grbs_y_id <- which( sapply( lapply( nms , function(x) grepl( "axis.line.y" , x ) ) , any ) == 1 )
   #grob variable iterates over blocks of colums of the ggplot
+  # for (grob in (1:length(grbs_x_id))){
+  #   gplotPath$grobs[[grbs_x_id[grob]]]$children$axis$grobs[[1]]$children[[1]]$gp$col=grob
+  # }
+  
   for (grob in (1:length(grbs_x_id))){
-    gplotPath$grobs[[grbs_x_id[grob]]]$children$axis$grobs[[1]]$children[[1]]$gp$col=grob
+    to_select <- grbs_x_id[grob]
+    if (length(to_select) >= 1) {
+      item_at_grob <- gplotPath$grobs[[to_select]]
+      if (! is.null(item_at_grob)) {
+        item_at_grob$children$axis$grobs[[1]]$children[[1]]$gp$col=grob
+      }
+    }
   }
+  
 
   #Make genes melt
   kegg_melt_gene <- dplyr::filter(kegg_melt, gene_group=="Genes")
@@ -496,10 +507,20 @@ plot_grid_genes <- function(path_mat, title="", experiment_ann=c(), gene_group=N
   grbs_x_id <- which( sapply( lapply( nms , function(x) grepl( "axis.line.x" , x ) ) , any ) == 1 )
   grbs_y_id <- which( sapply( lapply( nms , function(x) grepl( "axis.line.y" , x ) ) , any ) == 1 )
   #grob variable iterates over blocks of colums of the ggplot
-  for (grob in (1:length(grbs_x_id))){
-    gplot$grobs[[grbs_x_id[grob]]]$children$axis$grobs[[1]]$children[[1]]$gp$col=grob
-  }
+  # for (grob in (1:length(grbs_x_id))){
+  #   gplot$grobs[[grbs_x_id[grob]]]$children$axis$grobs[[1]]$children[[1]]$gp$col=grob
+  # }
 
+  for (grob in (1:length(grbs_x_id))){
+    to_select <- grbs_x_id[grob]
+    if (length(to_select) >= 1) {
+      item_at_grob <- gplot$grobs[[to_select]]
+      if (! is.null(item_at_grob)) {
+        item_at_grob$children$axis$grobs[[1]]$children[[1]]$gp$col=grob
+      }
+    }
+  }
+  
   # #grob variable iterates over blocks of rows of the ggplot
   # for (grob in (1:length(grbs_y_id))){
   #   gplot$grobs[[grbs_y_id[grob]]]$children$axis$grobs[[1]]$children[[1]]$gp$col=darkcols[grob]
