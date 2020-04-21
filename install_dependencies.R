@@ -16,21 +16,6 @@ install.bioc <- function(pkg){
 	}
 }
 
-#Install Bioconductor dependencies
-bioc_pkgs <- c(
-	"GOSim", "KEGG.db", "org.Hs.eg.db", "org.Mm.eg.db", "org.Rn.eg.db",
-	"reactome.db"
-)
-bioc_pkgs.inst <- bioc_pkgs[!(bioc_pkgs %in% rownames(installed.packages()))]
-if(length(bioc_pkgs.inst)>0){
-	print(paste0("Missing ", length(bioc_pkgs.inst), " Bioconductor Packages:"))
-	for(pkg in bioc_pkgs.inst){
-		print(paste0("Installing Package:'", pkg, "'..."))
-		install.bioc(pkg)
-		print("Installed!!!")
-	}
-}
-
 #Install CRAN dependencies
 cran_pkgs <- c(
 	"DT", "RColorBrewer", "V8", "cellranger", "devtools", "gProfileR", "ggplot2",
@@ -49,3 +34,19 @@ if(length(cran_pkgs.inst)>0){
 		print("Installed!!!")
 	}
 }
+
+#Install Bioconductor dependencies
+bioc_pkgs <- c(
+	"GOSim", "KEGG.db", "org.Hs.eg.db", "org.Mm.eg.db", "org.Rn.eg.db",
+	"reactome.db"
+)
+bioc_pkgs.inst <- bioc_pkgs[!(bioc_pkgs %in% rownames(installed.packages()))]
+if(length(bioc_pkgs.inst)>0){
+	print(paste0("Missing ", length(bioc_pkgs.inst), " Bioconductor Packages:"))
+	for(pkg in bioc_pkgs.inst){
+		print(paste0("Installing Package:'", pkg, "'..."))
+		install.bioc(pkg)
+		print("Installed!!!")
+	}
+}
+
