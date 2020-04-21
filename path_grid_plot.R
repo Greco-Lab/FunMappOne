@@ -237,13 +237,34 @@ plot_grid <- function(path_mat,path_hier, title="", experiment_ann=c(),discrete=
   grbs_x_id <- which( sapply( lapply( nms , function(x) grepl( "axis.line.x" , x ) ) , any ) == 1 )
   grbs_y_id <- which( sapply( lapply( nms , function(x) grepl( "axis.line.y" , x ) ) , any ) == 1 )
   #grob variable iterates over blocks of colums of the ggplot
+  #for (grob in (1:length(grbs_x_id))){
+  #  gplot$grobs[[grbs_x_id[grob]]]$children$axis$grobs[[1]]$children[[1]]$gp$col=grob
+  #}
+  #grob variable iterates over blocks of rows of the ggplot
+  #for (grob in (1:length(grbs_y_id))){
+  #  gplot$grobs[[grbs_y_id[grob]]]$children$axis$grobs[[1]]$children[[1]]$gp$col=darkcols[grob]
+  #}
+     #grob variable iterates over blocks of colums of the ggplot
   for (grob in (1:length(grbs_x_id))){
-    gplot$grobs[[grbs_x_id[grob]]]$children$axis$grobs[[1]]$children[[1]]$gp$col=grob
+    to_select <- grbs_x_id[grob]
+    if (length(to_select) >= 1) { # Check added because there was a 0 length vector. Luca
+      item_at_grob <- gplot$grobs[[to_select]]
+      if (! is.null(item_at_grob)) { # Check added because there where nulls. Luca
+        item_at_grob$children$axis$grobs[[1]]$children[[1]]$gp$col=grob
+      }
+    }
   }
   #grob variable iterates over blocks of rows of the ggplot
   for (grob in (1:length(grbs_y_id))){
-    gplot$grobs[[grbs_y_id[grob]]]$children$axis$grobs[[1]]$children[[1]]$gp$col=darkcols[grob]
+    to_select <- grbs_y_id[grob]
+    if (length(to_select) >= 1) {
+      item_at_grob <- gplot$grobs[[to_select]]
+      if (! is.null(item_at_grob)) {
+        item_at_grob$children$axis$grobs[[1]]$children[[1]]$gp$col=darkcols[grob]
+      }
+    }
   }
+
 
 #  save(list = ls(all.names = TRUE),file = "ggplotting")
 
