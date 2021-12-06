@@ -227,7 +227,7 @@ fluidPage(
 
                             fluidRow(
                               column(4,checkboxInput("doGrouping", "Show categories", value = TRUE)),
-                              column(4,checkboxInput("aspectRatio", "Keep aspect ratio", value = TRUE)),
+                              column(4,checkboxInput("aspectRatio", "Keep aspect ratio", value = FALSE)),
                               column(4,actionButton("do", "Plot Map")),
                               shinyBS::bsTooltip(id = "do",title ="NOTE: press the Plot Mat button every time you update the map!",placement = "bottom")
 

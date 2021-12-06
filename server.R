@@ -65,6 +65,9 @@ shinyServer(function(input, output,session) {
     }else{
       opt = 1:nrow(gVars$KEGG_MAT)
     }
+    
+    shinyjs::disable("aspectRatio")
+    
     selectInput("nc", "Number of clusters", opt,multiple = FALSE,selected = 1)
   })
 
