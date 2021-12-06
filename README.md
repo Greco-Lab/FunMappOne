@@ -58,7 +58,7 @@ if(length(bioc_pkgs.inst)>0){
 
 #Install CRAN dependencies
 cran_pkgs <- c("ggplotify", "RColorBrewer", "reshape", "ggplot2", "shiny", "shinyjs", "tibble",
-               "gProfileR", "DT", "randomcoloR", "readxl", "cellranger", "devtools", "scales",
+               "gProfileR","gprofiler2", "DT", "randomcoloR", "readxl", "cellranger", "devtools", "scales",
                "gtools", "shinycssloaders", "shinyBS", "tidyverse",
                 "gridExtra", "gtable", "grid", "xlsx")
 cran_pkgs.inst <- cran_pkgs[!(cran_pkgs %in% rownames(installed.packages()))]
