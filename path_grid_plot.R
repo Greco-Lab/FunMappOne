@@ -129,7 +129,7 @@ collapse_paths <- function (kegg_hierarchy,kegg_mat_cell, collapse_level=1,col_f
 # color_leg     if a discrete scale is chosen, than the colour legend for each possible value has to be provided
 # level_col   level (column number) from the hierarchy used to group columns (pathways)
 
-plot_grid <- function(path_mat,path_hier, title="", experiment_ann=c(),discrete=F,square_colors=c(),color_leg=c(),level_col=1,treat_text_size=8,path_text_size=6, asRatio = TRUE) {
+plot_grid <- function(path_mat,path_hier, title="", experiment_ann=c(),discrete=F,square_colors=c(),color_leg=c(),level_col=1,treat_text_size=8,path_text_size=6, asRatio = FALSE) {
   #save(path_mat, path_hier,experiment_ann,title,discrete,square_colors,color_leg,
   #     level_col,treat_text_size,path_text_size,file="demo/demo_plot.RData")
 
