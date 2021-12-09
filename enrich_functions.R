@@ -277,6 +277,7 @@ convert_genes = function(organism = "hsapiens", GList, annType = "SYMBOL"){
     
     #all(M$ID[matches] == selectAnnDF[,1])
     M[matches,1] = selectAnnDF[,2]
+    rownames(M) = M[,1]
     
     #update gene symbols
     GList[[i]] = M
