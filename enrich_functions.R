@@ -8,7 +8,7 @@ suppressMessages({
   library(plyr)
   library(stats)
   library(jsonlite)
-  library(gProfileR)
+  library(gprofiler2)
   
 })
 
